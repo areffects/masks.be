@@ -1,0 +1,45 @@
+# File types
+*.md
+
+# CI files
+.circleci/
+
+# Kubernetes files
+.kubefiles/
+kubefiles/
+
+# Development files
+coverage/
+scripts/
+bundles/
+reports/
+node_modules/
+.eslintrc.js
+.prettierignore
+.prettierrc
+commitlint.config.js
+gh-md-toc
+jest.config.js
+lerna.json
+lighthouserc.json
+__mocks__/
+__tests__/
+*.test.js
+*.test.ts
+*.test.jsx
+*.test.tsx
+
+# Editor files
+.vscode/
+.editorconfig
+
+# Docker
+.dockerignore
+Dockerfile
+
+# Git
+.git/
+.github/
+.gitignore
+
+# Other
