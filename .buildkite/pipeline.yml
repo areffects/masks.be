@@ -1,0 +1,10 @@
+steps:
+  - label: 'build back'
+    command:
+      - "docker-compose build --build-arg PORT=$PORT --build-arg NODE_ENV=$NODE_ENV app"
+
+  - wait
+
+  - label: 'start back'
+    command:
+      - "NODE_ENV=$NODE_ENV PORT=$PORT docker-compose up -d app"
