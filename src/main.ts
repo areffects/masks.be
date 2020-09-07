@@ -13,7 +13,7 @@ async function bootstrap() {
 	await app.listen(PORT)
 	SystemLogger.log(`Application is running on: ${await app.getUrl()} 🚀`);
 
-	if (module.hot) {
+	if (module && module.hot) {
 		module.hot.accept();
 		module.hot.dispose(() => app.close());
 		SystemLogger.log(`Hot-Module Replacement: started 🔥`);
