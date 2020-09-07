@@ -1,13 +1,16 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
 import { GraphQLModule } from '@nestjs/graphql';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
+
+import { MONGO_URI } from './environments'
+
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    MongooseModule.forRoot(MONGO_URI),
     GraphQLModule.forRoot({}),
   ],
   controllers: [AppController],
