@@ -1,4 +1,4 @@
-# MA Test Back
+# Masks Backend
 
 The server side application based on [Nest.js](https://nestjs.com/).
 
