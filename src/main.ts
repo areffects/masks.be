@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core'
-import { Logger as SystemLogger } from '@nestjs/common'
+import { Logger as SystemLogger, ValidationPipe } from '@nestjs/common'
 
 import { AppModule } from './app.module'
 
@@ -8,8 +8,19 @@ import { Logger } from './config/logger'
 import { PORT } from './environments'
 
 async function bootstrap() {
-	const app = await NestFactory.create(AppModule, { logger: new Logger() })
+	const isDev = process.env.NODE_ENV === 'development'
+	console.log('isDev :>> ', isDev)
+	const app = await NestFactory.create(
+		AppModule,
+		isDev ? {} : { logger: new Logger() }
+	)
 	app.setGlobalPrefix('api/v1')
+	app.useGlobalPipes(
+		new ValidationPipe({
+			transform: true,
+			skipMissingProperties: true
+		})
+	)
 	await app.listen(PORT)
 	SystemLogger.log(`Application is running on: ${await app.getUrl()} 🚀`)
 	if (module && module.hot) {

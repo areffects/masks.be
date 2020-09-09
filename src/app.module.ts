@@ -1,15 +1,19 @@
 import { Module } from '@nestjs/common'
-import { MongooseModule } from '@nestjs/mongoose'
-// import { GraphQLModule } from '@nestjs/graphql';
 
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 
-import { MONGO_URI } from './environments'
+import { TransactionsModule } from './modules/transactions/transactions.module'
+import { DatabaseModule } from './modules/database/database.module'
+import { AuthModule } from './modules/auth/auth.module'
+import { UsersModule } from './modules/users/users.module'
 
 @Module({
 	imports: [
-		MongooseModule.forRoot(MONGO_URI)
+		DatabaseModule,
+		AuthModule,
+		TransactionsModule,
+		UsersModule
 		// GraphQLModule.forRoot({}),
 	],
 	controllers: [AppController],
