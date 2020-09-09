@@ -1,6 +1,6 @@
 import { IsString, IsNumber } from 'class-validator'
 
-export class CreateTransactionDto {
+export class UpdateTransactionDto {
 	@IsString()
 	user_id: string
 
