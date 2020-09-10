@@ -9,7 +9,6 @@ import { PORT } from './environments'
 
 async function bootstrap() {
 	const isDev = process.env.NODE_ENV === 'development'
-	console.log('isDev :>> ', isDev)
 	const app = await NestFactory.create(
 		AppModule,
 		isDev ? {} : { logger: new Logger() }
