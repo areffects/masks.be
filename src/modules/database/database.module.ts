@@ -3,6 +3,10 @@ import { MongooseModule } from '@nestjs/mongoose'
 import { MONGO_URI } from 'src/environments'
 
 @Module({
-	imports: [MongooseModule.forRoot(MONGO_URI)]
+	imports: [
+		MongooseModule.forRoot(
+			'mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false'
+		)
+	]
 })
 export class DatabaseModule {}

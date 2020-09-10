@@ -1,7 +1,8 @@
 import { Document } from 'mongoose'
 
 export interface ITransaction extends Document {
-	readonly user_id: number
+	readonly userId: string
 	readonly type: string
 	readonly amount: number
+	readonly balance: number
 }

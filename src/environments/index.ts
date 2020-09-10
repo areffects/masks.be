@@ -10,4 +10,5 @@ const APP_PREFIX: string = process.env.APP_PREFIX || 'api/v1'
 const MONGO_URI: string =
 	process.env.MONGO_URI || 'mongodb://localhost:27017/Masks'
 
+console.log('MONGO_URI :>> ', MONGO_URI)
 export { NODE_ENV, APP_PREFIX, PORT, MONGO_URI }

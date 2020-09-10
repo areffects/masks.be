@@ -2,7 +2,7 @@ import { IsString, IsNumber } from 'class-validator'
 
 export class UpdateTransactionDto {
 	@IsString()
-	user_id: string
+	userId: string
 
 	@IsString()
 	type: string

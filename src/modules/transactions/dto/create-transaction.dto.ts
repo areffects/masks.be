@@ -3,7 +3,7 @@ import { IsString, IsDefined, IsNumber } from 'class-validator'
 export class CreateTransactionDto {
 	@IsDefined()
 	@IsString()
-	user_id: string
+	userId: string
 
 	@IsDefined()
 	@IsString()
