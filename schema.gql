@@ -2,32 +2,32 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type TransactionModel {
-  id: ID!
-  userId: String!
+type transactionObject {
+  _id: ID!
+  userId: String
   type: String!
   amount: Float!
   balance: Float!
 }
 
 type Query {
-  findAllTransactionModel: [TransactionModel!]!
-  findOneTransactionModel: TransactionModel!
+  findAllTransactionObject: [transactionObject!]!
+  findOneTransactionObject: transactionObject!
 }
 
 type Mutation {
-  createTransactionModel(data: CreateTransactionInput!): TransactionModel!
-  updateTransactionModel(data: UpdateTransactionInput!, id: String!): TransactionModel!
-  deleteTransactionModel(id: String!): TransactionModel!
+  createTransactionObject(data: createTransactionInput!): transactionObject!
+  updateTransactionObject(data: updateTransactionInput!, id: String!): transactionObject!
+  deleteTransactionObject(id: String!): transactionObject!
 }
 
-input CreateTransactionInput {
+input createTransactionInput {
   userId: String!
   type: String!
   amount: Float!
 }
 
-input UpdateTransactionInput {
+input updateTransactionInput {
   userId: String!
   type: String!
   amount: Float!

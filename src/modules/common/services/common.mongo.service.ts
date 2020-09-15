@@ -1,5 +1,7 @@
+import { Injectable } from '@nestjs/common'
 import { Document, Model } from 'mongoose'
 
+@Injectable()
 abstract class BaseMongoService<T extends Document, C, U> {
 	constructor(private readonly baseModel: Model<T>) {}
 
@@ -25,8 +27,9 @@ abstract class BaseMongoService<T extends Document, C, U> {
 
 	async create(data: C): Promise<T> {
 		console.log(data)
-		const createdCat = new this.baseModel(data)
-		return createdCat.save()
+		// console.log(data)
+		const created = new this.baseModel(data)
+		return created.save()
 	}
 }
 export { BaseMongoService }

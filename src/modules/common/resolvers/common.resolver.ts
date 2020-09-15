@@ -16,6 +16,11 @@ export default function BaseResolver<
 
 		@Query(() => [classRef], { name: `findAll${classRef.name}` })
 		async findAll(): Promise<T[]> {
+			console.log('123 :>> ', 6662)
+			console.log(
+				'this.baseService.findAll() :>> ',
+				await this.baseService.findAll()
+			)
 			return this.baseService.findAll()
 		}
 

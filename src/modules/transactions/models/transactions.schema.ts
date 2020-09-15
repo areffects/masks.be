@@ -4,7 +4,7 @@ import { Document } from 'mongoose'
 @Schema()
 export class Transaction extends Document {
 	@Prop()
-	id: string
+	_id: string
 
 	@Prop()
 	user_id: number

@@ -1,12 +1,12 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql'
 import { Document } from 'mongoose'
 
-@ObjectType()
-export class TransactionModel extends Document {
+@ObjectType('transactionObject')
+export class TransactionObject extends Document {
 	@Field(() => ID)
-	id: string
+	_id: string
 
-	@Field()
+	@Field({ nullable: true })
 	userId: string
 
 	@Field()

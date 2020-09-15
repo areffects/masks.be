@@ -21,6 +21,7 @@ import { GraphQLModule } from '@nestjs/graphql'
 					'editor.theme': 'light'
 				}
 			},
+			context: ({ req }) => ({ req }),
 			installSubscriptionHandlers: true,
 			autoSchemaFile: 'schema.gql'
 		})

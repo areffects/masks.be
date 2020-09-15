@@ -1,6 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql'
 
-@InputType()
+@InputType('createTransactionInput')
 export class CreateTransactionInput {
 	@Field()
 	userId: string
