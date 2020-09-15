@@ -1,0 +1,35 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type TransactionModel {
+  id: ID!
+  userId: String!
+  type: String!
+  amount: Float!
+  balance: Float!
+}
+
+type Query {
+  findAllTransactionModel: [TransactionModel!]!
+  findOneTransactionModel: TransactionModel!
+}
+
+type Mutation {
+  createTransactionModel(data: CreateTransactionInput!): TransactionModel!
+  updateTransactionModel(data: UpdateTransactionInput!, id: String!): TransactionModel!
+  deleteTransactionModel(id: String!): TransactionModel!
+}
+
+input CreateTransactionInput {
+  userId: String!
+  type: String!
+  amount: Float!
+}
+
+input UpdateTransactionInput {
+  userId: String!
+  type: String!
+  amount: Float!
+  balance: Float!
+}

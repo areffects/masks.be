@@ -1,24 +1,22 @@
 import { Model } from 'mongoose'
 import { Injectable } from '@nestjs/common'
-import { ITransaction } from './interfaces/transactions.interface'
-import { CreateTransactionDto } from './dto/create-transaction.dto'
+import { CreateTransactionInput } from './dto/create-transaction.input'
 import { InjectModel } from '@nestjs/mongoose'
-import { Transaction } from './transactions.schema'
+import { Transaction } from './models/transactions.schema'
+import { TransactionModel } from './models/transactions.model'
+import { BaseMongoService } from '../common/services/common.mongo.service'
+import { UpdateTransactionInput } from './dto/update-transaction.input'
 
 @Injectable()
-export class TransactionService {
+export class TransactionsService extends BaseMongoService<
+	TransactionModel,
+	CreateTransactionInput,
+	UpdateTransactionInput
+> {
 	constructor(
-		@InjectModel(Transaction.name) private transactionModel: Model<ITransaction>
-	) {}
-
-	async create(
-		createTransactionDto: CreateTransactionDto
-	): Promise<ITransaction> {
-		const createdCat = new this.transactionModel(createTransactionDto)
-		return createdCat.save()
-	}
-
-	async findAll(): Promise<ITransaction[]> {
-		return this.transactionModel.find().exec()
+		@InjectModel(Transaction.name)
+		private transactionModel: Model<TransactionModel>
+	) {
+		super(transactionModel)
 	}
 }
