@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common'
-import { Document, Model } from 'mongoose'
+import { Document, FilterQuery, Model, Types } from 'mongoose'
+import { ObjectId } from '../constants/common'
 
 @Injectable()
 abstract class BaseMongoService<T extends Document, C, U> {
@@ -9,27 +10,26 @@ abstract class BaseMongoService<T extends Document, C, U> {
 		return this.baseModel.find().exec()
 	}
 
-	async findOne(): Promise<T> {
-		return this.baseModel.findOne().exec()
+	async findOne(data: FilterQuery<T>): Promise<T> {
+		return this.baseModel.findOne(data).exec()
 	}
 
 	async findOneById(id: string): Promise<T> {
-		return this.baseModel.findById(id).exec()
-	}
-
-	async delete(id: string): Promise<T> {
-		return this.baseModel.findByIdAndDelete(id).exec()
-	}
-
-	async update(id: string, data: U): Promise<T> {
-		return this.baseModel.findByIdAndUpdate(id, data).exec()
+		return this.baseModel.findById(new ObjectId(id)).exec()
 	}
 
 	async create(data: C): Promise<T> {
-		console.log(data)
-		// console.log(data)
 		const created = new this.baseModel(data)
 		return created.save()
+	}
+
+	async update(id: string, data: U): Promise<T> {
+		return this.baseModel.findByIdAndUpdate(new ObjectId(id), data).exec()
+	}
+
+	async delete(id: string): Promise<boolean> {
+		const a = await this.baseModel.findByIdAndDelete(new ObjectId(id)).exec()
+		return !!a
 	}
 }
 export { BaseMongoService }

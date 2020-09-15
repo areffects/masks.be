@@ -4,7 +4,7 @@
 
 type transactionObject {
   _id: ID!
-  userId: String
+  userId: String!
   type: String!
   amount: Float!
   balance: Float!
@@ -12,13 +12,13 @@ type transactionObject {
 
 type Query {
   findAllTransactionObject: [transactionObject!]!
-  findOneTransactionObject: transactionObject!
+  findOneByIdTransactionObject(id: String!): transactionObject!
 }
 
 type Mutation {
   createTransactionObject(data: createTransactionInput!): transactionObject!
   updateTransactionObject(data: updateTransactionInput!, id: String!): transactionObject!
-  deleteTransactionObject(id: String!): transactionObject!
+  deleteTransactionObject(id: String!): Boolean!
 }
 
 input createTransactionInput {
@@ -31,5 +31,4 @@ input updateTransactionInput {
   userId: String!
   type: String!
   amount: Float!
-  balance: Float!
 }

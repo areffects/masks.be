@@ -16,17 +16,23 @@ export default function BaseResolver<
 
 		@Query(() => [classRef], { name: `findAll${classRef.name}` })
 		async findAll(): Promise<T[]> {
-			console.log('123 :>> ', 6662)
-			console.log(
-				'this.baseService.findAll() :>> ',
-				await this.baseService.findAll()
-			)
 			return this.baseService.findAll()
 		}
 
-		@Query(() => classRef, { name: `findOne${classRef.name}` })
-		async findOne(): Promise<T> {
-			return this.baseService.findOne()
+		// @Query(() => classRef, { name: `findOne${classRef.name}` })
+		// async findOne(
+		// 	@Args({ name: 'data', type: () => classRef })
+		// 	data
+		// ): Promise<T> {
+		// 	return this.baseService.findOne(data)
+		// }
+
+		@Query(() => classRef, { name: `findOneById${classRef.name}` })
+		async findOneById(
+			@Args({ name: 'id', type: () => String })
+			id: string
+		): Promise<T> {
+			return this.baseService.findOneById(id)
 		}
 
 		@Mutation(() => classRef, {
@@ -36,8 +42,6 @@ export default function BaseResolver<
 			@Args({ name: 'data', type: () => createClassRef })
 			createData: C
 		): Promise<T> {
-			const a = await this.baseService.create(createData)
-			console.log(a)
 			return this.baseService.create(createData)
 		}
 
@@ -49,8 +53,10 @@ export default function BaseResolver<
 			return this.baseService.update(id, updateData)
 		}
 
-		@Mutation(() => classRef, { name: `delete${classRef.name}` })
-		async delete(@Args('id') id: string): Promise<T> {
+		@Mutation(() => Boolean, { name: `delete${classRef.name}` })
+		async delete(
+			@Args({ name: 'id', type: () => String }) id: string
+		): Promise<boolean> {
 			return this.baseService.delete(id)
 		}
 	}

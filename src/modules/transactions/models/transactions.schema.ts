@@ -1,13 +1,19 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
-import { Document } from 'mongoose'
+import { Document, Types } from 'mongoose'
+import { ObjectId } from 'src/modules/common/constants/common'
 
 @Schema()
 export class Transaction extends Document {
-	@Prop()
+	@Prop({
+		type: Types.ObjectId,
+		index: true,
+		required: true,
+		default: () => new ObjectId()
+	})
 	_id: string
 
-	@Prop()
-	user_id: number
+	@Prop({ required: true })
+	userId: number
 
 	@Prop()
 	type: string
