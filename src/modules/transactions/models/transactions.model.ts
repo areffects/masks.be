@@ -3,8 +3,8 @@ import { Document } from 'mongoose'
 
 @ObjectType()
 export class TransactionModel extends Document {
-	@Field((type) => ID)
-	id?: string
+	@Field(() => ID)
+	id: string
 
 	@Field()
 	userId: string

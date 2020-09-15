@@ -24,6 +24,7 @@ abstract class BaseMongoService<T extends Document, C, U> {
 	}
 
 	async create(data: C): Promise<T> {
+		console.log(data)
 		const createdCat = new this.baseModel(data)
 		return createdCat.save()
 	}

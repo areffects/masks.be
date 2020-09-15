@@ -9,6 +9,9 @@ export class Transaction extends Document {
 	@Prop()
 	user_id: number
 
+	@Prop()
+	type: string
+
 	@Prop({ required: true })
 	amount: number
 
