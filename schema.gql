@@ -10,15 +10,37 @@ type transactionObject {
   balance: Float!
 }
 
+type UserObject {
+  _id: ID!
+  userName: String!
+  lastName: String!
+  email: String!
+  password: String!
+  role: String!
+  avatarId: String
+  status: String!
+}
+
+type TokenObject {
+  token: String!
+}
+
 type Query {
   findAllTransactionObject: [transactionObject!]!
   findOneByIdTransactionObject(id: String!): transactionObject!
+  findAllUserObject: [UserObject!]!
+  findOneByIdUserObject(id: String!): UserObject!
 }
 
 type Mutation {
   createTransactionObject(data: createTransactionInput!): transactionObject!
   updateTransactionObject(data: updateTransactionInput!, id: String!): transactionObject!
   deleteTransactionObject(id: String!): Boolean!
+  createUserObject(data: CreateUserInput!): UserObject!
+  updateUserObject(data: UpdateUserInput!, id: String!): UserObject!
+  deleteUserObject(id: String!): Boolean!
+  loginUser(data: LoginUserObject!): TokenObject!
+  registerUser(data: CreateUserInput!): UserObject!
 }
 
 input createTransactionInput {
@@ -31,4 +53,23 @@ input updateTransactionInput {
   userId: String!
   type: String!
   amount: Float!
+}
+
+input CreateUserInput {
+  userName: String!
+  lastName: String!
+  email: String!
+  password: String!
+}
+
+input UpdateUserInput {
+  userName: String!
+  lastName: String!
+  email: String!
+  password: String!
+}
+
+input LoginUserObject {
+  email: String!
+  password: String!
 }

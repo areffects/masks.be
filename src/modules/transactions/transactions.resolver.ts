@@ -1,4 +1,3 @@
-import { Type } from '@nestjs/common'
 import { Resolver } from '@nestjs/graphql'
 import { TransactionObject } from './dto/transactions.object'
 import { CreateTransactionInput } from './dto/create-transaction.input'
@@ -9,9 +8,9 @@ import { TransactionsService } from './transactions.service'
 
 @Resolver(() => TransactionObject)
 export class TransactionsResolver extends BaseResolver<
-	Type<TransactionObject>,
-	Type<CreateTransactionInput>,
-	Type<UpdateTransactionInput>
+	TransactionObject,
+	CreateTransactionInput,
+	UpdateTransactionInput
 >(TransactionObject, CreateTransactionInput, UpdateTransactionInput) {
 	constructor(private readonly transactionsService: TransactionsService) {
 		super(transactionsService)

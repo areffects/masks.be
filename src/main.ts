@@ -17,8 +17,7 @@ async function bootstrap() {
 	app.setGlobalPrefix('api/v1')
 	app.useGlobalPipes(
 		new ValidationPipe({
-			transform: true,
-			skipMissingProperties: true
+			transform: true
 		})
 	)
 	await app.listen(PORT)
@@ -28,22 +27,9 @@ async function bootstrap() {
 	// let currentApp = app
 	if (module && module.hot) {
 		module.hot.accept()
-		// module.hot.accept('./app.module.ts', () => {
-		// 	// app.removeListener('request', currentApp);
-		// 	//   server.on('request', app);
-		// 	currentApp = app
-		// })
+
 		module.hot.dispose(() => app.close())
-		// module.hot.status((status) => {
-		// 	console.log('status :>> ', status)
-		// 	// if (status === 'idle') {
-		// 	// 	module.hot.check(true, console.log)
-		// 	// }
-		// 	if (status === 'ready') {
-		// 		// module.hot.apply({ onAccepted: console.log }, console.log)
-		// 		// module.hot.addStatusHandler((status) => console.log('STATUS: ', status))
-		// 	}
-		// })
+
 		SystemLogger.log(`Hot-Module Replacement: started 🔥`)
 	}
 }

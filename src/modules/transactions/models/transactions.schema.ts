@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { Document, Types } from 'mongoose'
 import { ObjectId } from 'src/modules/common/constants/common'
 
-@Schema()
+@Schema({ timestamps: true })
 export class Transaction extends Document {
 	@Prop({
 		type: Types.ObjectId,

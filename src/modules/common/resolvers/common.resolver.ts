@@ -1,14 +1,20 @@
-import { Type } from '@nestjs/common'
+import { Type, UsePipes } from '@nestjs/common'
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
+import { plainToClass } from 'class-transformer'
+import { ClassType } from 'class-transformer/ClassTransformer'
 import { Document } from 'mongoose'
+import { CreateUserInput } from 'src/modules/users/dto/create-user.input'
+import { UserObject } from 'src/modules/users/dto/user.object'
+import { DATA } from '../constants/common'
+import { ClassValidatorValidationPipe } from '../pipes/class-validator.validation.pipe'
 import { BaseMongoService } from '../services/common.mongo.service'
 
-export default function BaseResolver<
-	T extends Type<unknown>,
-	C extends Type<unknown>,
-	U extends Type<unknown>
->(classRef: T, createClassRef?: C, updateClassRef?: U): any {
-	@Resolver({ isAbstract: true })
+export default function BaseResolver<T, C, U>(
+	classRef: any,
+	createClassRef: any,
+	updateClassRef: any
+): any {
+	@Resolver()
 	abstract class BaseResolverHost {
 		constructor(
 			private readonly baseService: BaseMongoService<T & Document, C, U>
@@ -38,17 +44,19 @@ export default function BaseResolver<
 		@Mutation(() => classRef, {
 			name: `create${classRef.name}`
 		})
+		@UsePipes(new ClassValidatorValidationPipe(createClassRef))
 		async create(
-			@Args({ name: 'data', type: () => createClassRef })
+			@Args({ name: DATA, type: () => createClassRef })
 			createData: C
 		): Promise<T> {
 			return this.baseService.create(createData)
 		}
 
 		@Mutation(() => classRef, { name: `update${classRef.name}` })
+		@UsePipes(new ClassValidatorValidationPipe(updateClassRef))
 		async update(
 			@Args({ name: 'id', type: () => String }) id: string,
-			@Args({ name: 'data', type: () => updateClassRef }) updateData: U
+			@Args({ name: DATA, type: () => updateClassRef }) updateData: U
 		): Promise<T> {
 			return this.baseService.update(id, updateData)
 		}
