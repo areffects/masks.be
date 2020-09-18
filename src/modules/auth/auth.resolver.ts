@@ -1,17 +1,13 @@
 import { Args, Mutation, Resolver } from '@nestjs/graphql'
-import {
-	BadRequestException,
-	UnauthorizedException,
-	UsePipes
-} from '@nestjs/common'
+import { BadRequestException, UnauthorizedException } from '@nestjs/common'
 import { DATA } from '../common/constants/common'
-import { ClassValidatorValidationPipe } from '../common/pipes/class-validator.validation.pipe'
 import { CreateUserInput } from '../users/dto/create-user.input'
 import { UserObject } from '../users/dto/user.object'
 import { UsersService } from '../users/users.service'
 import { TokenObject } from './dto/token.dto'
 import { LoginUserObject } from './dto/login-user.dto'
 import { AuthService } from './auth.service'
+import { INVALID_EMAIL } from './constants/errors'
 
 @Resolver(() => UserObject)
 export class AuthResolver {
@@ -23,7 +19,6 @@ export class AuthResolver {
 	@Mutation(() => TokenObject, {
 		name: `loginUser`
 	})
-	// @UseGuards(JwtAuthGuard)
 	async login(
 		@Args({ name: DATA, type: () => LoginUserObject }) user: LoginUserObject
 	): Promise<TokenObject> {
@@ -32,7 +27,7 @@ export class AuthResolver {
 			user.password
 		)
 		if (!checkedUser) {
-			throw new UnauthorizedException('Invalid email or password!')
+			throw new UnauthorizedException(INVALID_EMAIL)
 		}
 		return this.authService.signUser(checkedUser)
 	}
@@ -51,6 +46,7 @@ export class AuthResolver {
 			})
 		}
 		const newUser = await this.usersService.create(createData)
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const { password, ...rest } = newUser.toJSON()
 		return rest
 	}

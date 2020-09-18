@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common'
-import { Document, FilterQuery, Model, Types } from 'mongoose'
+import { Document, FilterQuery, Model } from 'mongoose'
 import { ObjectId } from '../constants/common'
 
 @Injectable()
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 abstract class BaseMongoService<T extends Document, C, U> {
 	constructor(private readonly baseModel: Model<T>) {}
 
@@ -10,17 +11,16 @@ abstract class BaseMongoService<T extends Document, C, U> {
 		return this.baseModel.find().exec()
 	}
 
-	async findOne(data: FilterQuery<T>): Promise<T> {
-		return this.baseModel.findOne(data).exec()
+	async findOne(data: FilterQuery<T>, select = {}): Promise<T> {
+		return this.baseModel.findOne(data, select).exec()
 	}
 
 	async findOneById(id: string): Promise<T> {
 		return this.baseModel.findById(new ObjectId(id)).exec()
 	}
 
-	async create(data: C): Promise<T> {
-		const created = new this.baseModel(data)
-		return created.save()
+	async create(data: any): Promise<T> {
+		return this.baseModel.create(data)
 	}
 
 	async update(id: string, data: U): Promise<T> {

@@ -1,7 +1,6 @@
 import { Global, Module } from '@nestjs/common'
 import { PassportModule } from '@nestjs/passport'
-import { JWT_SECRET } from 'src/environments'
-import { JwtAuthGuard } from './guards/jwt-auth.guard'
+import { JWT_SECRET } from '../../environments'
 import { JwtModule } from '@nestjs/jwt'
 
 @Global()
@@ -10,7 +9,7 @@ import { JwtModule } from '@nestjs/jwt'
 		PassportModule,
 		JwtModule.register({ secret: JWT_SECRET, signOptions: { expiresIn: '6h' } })
 	],
-	providers: [JwtAuthGuard],
+	providers: [],
 	exports: [JwtModule]
 })
 export class CustomJwtModule {}

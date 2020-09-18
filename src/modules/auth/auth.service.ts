@@ -1,3 +1,4 @@
+import { compareSync } from 'bcrypt'
 import { Injectable } from '@nestjs/common'
 import { UsersService } from '../users/users.service'
 import { JwtService } from '@nestjs/jwt'
@@ -11,14 +12,20 @@ export class AuthService {
 		private jwtService: JwtService
 	) {}
 
-	async checkUser(email: string, password: string): Promise<UserObject> {
-		const user = await this.usersService.findOne({
-			email,
-			password
+	async findUserByEmail(email: string): Promise<UserObject> {
+		return this.usersService.findOne({
+			email
 		})
-		if (user && user.password === password) {
-			const { password, ...result } = user.toJSON()
-			return result
+	}
+
+	async checkUser(email: string, password: string): Promise<UserObject> {
+		const user = await this.findUserByEmail(email)
+		if (user) {
+			if (compareSync(password, user.password)) {
+				// eslint-disable-next-line @typescript-eslint/no-unused-vars
+				const { password, ...result } = user.toJSON()
+				return result
+			}
 		}
 		return null
 	}

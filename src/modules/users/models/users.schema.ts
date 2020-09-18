@@ -1,10 +1,19 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { Document, Types } from 'mongoose'
-import { ObjectId } from 'src/modules/common/constants/common'
+import { ObjectId } from '../../common/constants/common'
 import { ADMIN, USER } from '../constants/roles'
 import { BANNED, IN_PENDING, OK } from '../constants/statuses'
 
-@Schema({ timestamps: true })
+@Schema({
+	timestamps: true,
+	toJSON: {
+		virtuals: true,
+		transform: function (doc, ret) {
+			delete ret.password
+			return ret
+		}
+	}
+})
 export class User extends Document {
 	@Prop({
 		type: Types.ObjectId,
@@ -17,10 +26,14 @@ export class User extends Document {
 	@Prop({ required: true })
 	userName: string
 
-	@Prop({ required: true })
+	@Prop({ unique: true, required: true })
 	lastName: string
 
-	@Prop({ unique: true, required: true })
+	@Prop({
+		unique: true,
+		required: true,
+		lowercase: true
+	})
 	email: string
 
 	@Prop({ required: true })
