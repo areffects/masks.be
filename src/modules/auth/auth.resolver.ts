@@ -2,14 +2,14 @@ import { Args, Mutation, Resolver } from '@nestjs/graphql'
 import { BadRequestException, UnauthorizedException } from '@nestjs/common'
 import { DATA } from '../common/constants/common'
 import { CreateUserInput } from '../users/dto/create-user.input'
-import { UserObject } from '../users/dto/user.object'
+import { User } from '../users/dto/user.object'
 import { UsersService } from '../users/users.service'
 import { TokenObject } from './dto/token.dto'
 import { LoginUserObject } from './dto/login-user.dto'
 import { AuthService } from './auth.service'
 import { INVALID_EMAIL } from './constants/errors'
 
-@Resolver(() => UserObject)
+@Resolver(() => User)
 export class AuthResolver {
 	constructor(
 		private readonly usersService: UsersService,
@@ -32,13 +32,13 @@ export class AuthResolver {
 		return this.authService.signUser(checkedUser)
 	}
 
-	@Mutation(() => UserObject, {
+	@Mutation(() => User, {
 		name: `registerUser`
 	})
 	async register(
 		@Args({ name: DATA, type: () => CreateUserInput })
 		createData: CreateUserInput
-	): Promise<UserObject> {
+	): Promise<User> {
 		const email = await this.usersService.findOne({ email: createData.email })
 		if (email) {
 			throw new BadRequestException('Email already registered!')

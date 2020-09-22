@@ -10,7 +10,7 @@ type transactionObject {
   balance: Float!
 }
 
-type UserObject {
+type User {
   _id: ID!
   userName: String!
   lastName: String!
@@ -27,7 +27,7 @@ type TokenObject {
 
 type RatingObject {
   _id: ObjectId!
-  user: UserObject!
+  user: User!
   type: String!
   stars: Float!
 }
@@ -35,7 +35,7 @@ type RatingObject {
 """Mongo object id scalar type"""
 scalar ObjectId
 
-type UsersAvatarsObject {
+type UsersAvatars {
   _id: ID!
   userId: ObjectId!
   name: String!
@@ -46,33 +46,34 @@ type Query {
   findAllTransactionObject: [transactionObject!]!
   findOneTransactionObject(_id: ObjectId, userId: ObjectId, type: String, amount: Float): transactionObject!
   findOneByIdTransactionObject(id: String!): transactionObject!
-  findAllUserObject: [UserObject!]!
-  findOneUserObject(_id: ObjectId, userName: String, lastName: String, email: String, password: String, role: String, status: String): UserObject!
-  findOneByIdUserObject(id: String!): UserObject!
+  findAllUser: [User!]!
+  findOneUser(_id: ObjectId, userName: String, lastName: String, email: String, password: String, role: String, status: String): User!
+  findOneByIdUser(id: String!): User!
   findAllRatingObject: [RatingObject!]!
   findOneRatingObject(_id: ObjectId, userId: ObjectId, type: String, stars: Float): RatingObject!
   findOneByIdRatingObject(id: String!): RatingObject!
-  findAllUsersAvatarsObject: [UsersAvatarsObject!]!
-  findOneUsersAvatarsObject(userId: ObjectId!, name: String!, url: String!): UsersAvatarsObject!
-  findOneByIdUsersAvatarsObject(id: String!): UsersAvatarsObject!
+  findAllUsersAvatars: [UsersAvatars!]!
+  findOneUsersAvatars(userId: ObjectId!, name: String!, url: String!): UsersAvatars!
+  findOneByIdUsersAvatars(id: String!): UsersAvatars!
 }
 
 type Mutation {
   createTransactionObject(data: createTransactionInput!): transactionObject!
   updateTransactionObject(data: updateTransactionInput!, id: String!): transactionObject!
   deleteTransactionObject(id: String!): Boolean!
-  createUserObject(data: CreateUserInput!): UserObject!
-  updateUserObject(data: UpdateUserInput!, id: String!): UserObject!
-  deleteUserObject(id: String!): Boolean!
+  createUser(data: CreateUserInput!): User!
+  updateUser(data: UpdateUserInput!, id: String!): User!
+  deleteUser(id: String!): Boolean!
   loginUser(data: LoginUserObject!): TokenObject!
-  registerUser(data: CreateUserInput!): UserObject!
+  registerUser(data: CreateUserInput!): User!
   createRatingObject(data: CreateRatingInput!): RatingObject!
   updateRatingObject(data: UpdateRatingInput!, id: String!): RatingObject!
   deleteRatingObject(id: String!): Boolean!
-  createUsersAvatarsObject(data: CreateUsersAvatarsInput!): UsersAvatarsObject!
-  updateUsersAvatarsObject(data: UpdateUsersAvatarsInput!, id: String!): UsersAvatarsObject!
-  deleteUsersAvatarsObject(id: String!): Boolean!
+  createUsersAvatars(data: CreateUsersAvatarsInput!): UsersAvatars!
+  updateUsersAvatars(data: UpdateUsersAvatarsInput!, id: String!): UsersAvatars!
+  deleteUsersAvatars(id: String!): Boolean!
   uploadFile(file: Upload!): Boolean!
+  uploadFiles(files: [Upload!]!): Boolean!
 }
 
 input createTransactionInput {

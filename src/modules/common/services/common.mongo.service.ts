@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import { Document, FilterQuery, Model } from 'mongoose'
+import { CreateQuery, Document, FilterQuery, Model } from 'mongoose'
 import { ObjectId } from '../constants/common'
 
 @Injectable()
@@ -19,7 +19,7 @@ abstract class BaseMongoService<T extends Document, C, U> {
 		return this.baseModel.findById(new ObjectId(id))
 	}
 
-	async create(data: any): Promise<T> {
+	async create(data: CreateQuery<C>): Promise<T> {
 		return this.baseModel.create(data)
 	}
 

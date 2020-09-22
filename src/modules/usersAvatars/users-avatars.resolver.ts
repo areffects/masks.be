@@ -1,21 +1,22 @@
 import { Args, Mutation, Resolver } from '@nestjs/graphql'
-import { UsersAvatarsObject } from './dto/users-avatars.object'
+import { UsersAvatars } from './dto/users-avatars.object'
 import { UpdateUsersAvatarsInput } from './dto/update-user-avatars.input'
 import BaseResolver from '../common/resolvers/common.resolver'
 import { UsersAvatarsArgs } from './dto/users-avatars.args'
 import { CreateUsersAvatarsInput } from './dto/create-users-avatars.input'
 import { UsersAvatarsService } from './users-avatars.service'
 import { GraphQLUpload } from 'apollo-server-express'
-import { createWriteStream } from 'fs'
+import { CurrentUser } from '../auth/decorators/current-user.decorator'
+import { User } from '../users/models/users.schema'
 
-@Resolver(() => UsersAvatarsObject)
+@Resolver(() => UsersAvatars)
 export class UsersAvatarsResolver extends BaseResolver<
-	UsersAvatarsObject,
+	UsersAvatars,
 	CreateUsersAvatarsInput,
 	UpdateUsersAvatarsInput,
 	UsersAvatarsArgs
 >(
-	UsersAvatarsObject,
+	UsersAvatars,
 	CreateUsersAvatarsInput,
 	UpdateUsersAvatarsInput,
 	UsersAvatarsArgs
@@ -26,14 +27,41 @@ export class UsersAvatarsResolver extends BaseResolver<
 
 	@Mutation(() => Boolean)
 	async uploadFile(
+		@CurrentUser() user: User,
 		@Args({ name: 'file', type: () => GraphQLUpload })
 		{ createReadStream, filename }
 	): Promise<boolean> {
-		return new Promise(async (resolve, reject) =>
-			createReadStream()
-				.pipe(createWriteStream(`./uploads/${filename}`))
-				.on('finish', () => resolve(true))
-				.on('error', () => reject(false))
+		await this.usersAvatarsService.uploadFile({
+			createReadStream,
+			filename
+		})
+		await this.usersAvatarsService.create({
+			url: filename,
+			name: filename,
+			userId: user.id
+		})
+		return true
+	}
+
+	@Mutation(() => Boolean)
+	async uploadFiles(
+		@Args({ name: 'files', type: () => [GraphQLUpload] })
+		{ ...props }
+	): Promise<boolean> {
+		const files = await Promise.all(Object.keys(props).map((key) => props[key]))
+		Promise.all(
+			files.map(async (file) => {
+				const { createReadStream, filename } = file
+				await this.usersAvatarsService.uploadFile({
+					createReadStream,
+					filename
+				})
+				return this.usersAvatarsService.uploadFile({
+					createReadStream,
+					filename
+				})
+			})
 		)
+		return true
 	}
 }

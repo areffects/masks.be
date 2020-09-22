@@ -1,6 +1,6 @@
 import { UsePipes } from '@nestjs/common'
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
-import { Document } from 'mongoose'
+import { CreateQuery, Document } from 'mongoose'
 import { Roles } from 'src/modules/auth/decorators/roles.decorator'
 import { ADMIN, USER } from 'src/modules/users/constants/roles'
 import { DATA, ObjectId } from '../constants/common'
@@ -54,7 +54,7 @@ export default function BaseResolver<T, C, U, ARG>(
 		@UsePipes(new ClassValidatorValidationPipe(createClassRef))
 		async create(
 			@Args({ name: DATA, type: () => createClassRef })
-			createData: C
+			createData: CreateQuery<C>
 		): Promise<T> {
 			return this.baseService.create(createData)
 		}

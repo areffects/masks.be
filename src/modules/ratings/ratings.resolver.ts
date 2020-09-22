@@ -4,7 +4,7 @@ import { CreateRatingInput } from './dto/create-rating.input'
 import { UpdateRatingInput } from './dto/update-rating.input'
 import BaseResolver from '../common/resolvers/common.resolver'
 import { RatingsService } from './ratings.service'
-import { UserObject } from '../users/dto/user.object'
+import { User } from '../users/dto/user.object'
 import { UsersService } from '../users/users.service'
 import { Rating } from './models/ratings.schema'
 import { RatingArgs } from './dto/ratings.args'
@@ -23,8 +23,8 @@ export class RatingsResolver extends BaseResolver<
 		super(ratingsService)
 	}
 
-	@ResolveField('user', () => UserObject)
-	async getUser(@Parent() rating: Rating): Promise<UserObject> {
+	@ResolveField('user', () => User)
+	async getUser(@Parent() rating: Rating): Promise<User> {
 		return this.usersService.findOneById(rating.userId)
 	}
 }
