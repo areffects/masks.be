@@ -1,14 +1,14 @@
 import { Field, InputType } from '@nestjs/graphql'
 import { ObjectIdScalar } from 'src/modules/common/scalars/objectId.scalar'
 
-@InputType('createTransactionInput')
-export class CreateTransactionInput {
+@InputType()
+export class UpdateUsersAvatarsInput {
 	@Field(() => ObjectIdScalar)
 	userId: string
 
 	@Field()
-	type: string
+	name: string
 
 	@Field()
-	amount: number
+	url: string
 }

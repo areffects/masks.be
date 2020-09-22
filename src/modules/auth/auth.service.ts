@@ -4,6 +4,7 @@ import { UsersService } from '../users/users.service'
 import { JwtService } from '@nestjs/jwt'
 import { UserObject } from '../users/dto/user.object'
 import { TokenObject } from './dto/token.dto'
+import { User } from '../users/models/users.schema'
 
 @Injectable()
 export class AuthService {
@@ -12,7 +13,7 @@ export class AuthService {
 		private jwtService: JwtService
 	) {}
 
-	async findUserByEmail(email: string): Promise<UserObject> {
+	async findUserByEmail(email: string): Promise<User> {
 		return this.usersService.findOne({
 			email
 		})

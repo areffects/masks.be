@@ -35,6 +35,13 @@ type RatingObject {
 """Mongo object id scalar type"""
 scalar ObjectId
 
+type UsersAvatarsObject {
+  _id: ID!
+  userId: ObjectId!
+  name: String!
+  url: String!
+}
+
 type Query {
   findAllTransactionObject: [transactionObject!]!
   findOneTransactionObject(_id: ObjectId, userId: ObjectId, type: String, amount: Float): transactionObject!
@@ -45,6 +52,9 @@ type Query {
   findAllRatingObject: [RatingObject!]!
   findOneRatingObject(_id: ObjectId, userId: ObjectId, type: String, stars: Float): RatingObject!
   findOneByIdRatingObject(id: String!): RatingObject!
+  findAllUsersAvatarsObject: [UsersAvatarsObject!]!
+  findOneUsersAvatarsObject(userId: ObjectId!, name: String!, url: String!): UsersAvatarsObject!
+  findOneByIdUsersAvatarsObject(id: String!): UsersAvatarsObject!
 }
 
 type Mutation {
@@ -59,6 +69,10 @@ type Mutation {
   createRatingObject(data: CreateRatingInput!): RatingObject!
   updateRatingObject(data: UpdateRatingInput!, id: String!): RatingObject!
   deleteRatingObject(id: String!): Boolean!
+  createUsersAvatarsObject(data: CreateUsersAvatarsInput!): UsersAvatarsObject!
+  updateUsersAvatarsObject(data: UpdateUsersAvatarsInput!, id: String!): UsersAvatarsObject!
+  deleteUsersAvatarsObject(id: String!): Boolean!
+  uploadFile(file: Upload!): Boolean!
 }
 
 input createTransactionInput {
@@ -103,3 +117,18 @@ input UpdateRatingInput {
   type: String!
   stars: Float!
 }
+
+input CreateUsersAvatarsInput {
+  userId: ObjectId!
+  name: String!
+  url: String!
+}
+
+input UpdateUsersAvatarsInput {
+  userId: ObjectId!
+  name: String!
+  url: String!
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload

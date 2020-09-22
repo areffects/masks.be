@@ -1,10 +1,8 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql'
-import { Document } from 'mongoose'
-import {} from '@nestjs/mongoose'
 import { IsEmail } from 'class-validator'
 
 @ObjectType()
-export class UserObject extends Document {
+export class UserObject {
 	@Field(() => ID)
 	_id: string
 
