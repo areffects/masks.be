@@ -1,15 +1,15 @@
 import { Field, InputType } from '@nestjs/graphql'
-import { Types } from 'mongoose'
+
 import { ObjectIdScalar } from 'src/modules/common/scalars/objectId.scalar'
 
-@InputType('createTransactionInput')
-export class CreateTransactionInput {
+@InputType()
+export class CreateUsersAvatarsInput {
 	@Field(() => ObjectIdScalar)
-	userId: Types.ObjectId
+	userId: string
 
 	@Field()
-	type: string
+	name: string
 
 	@Field()
-	amount: number
+	url: string
 }

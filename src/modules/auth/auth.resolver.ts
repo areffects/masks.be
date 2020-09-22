@@ -41,9 +41,7 @@ export class AuthResolver {
 	): Promise<UserObject> {
 		const email = await this.usersService.findOne({ email: createData.email })
 		if (email) {
-			throw new BadRequestException({
-				message: 'Email already registered!'
-			})
+			throw new BadRequestException('Email already registered!')
 		}
 		const newUser = await this.usersService.create(createData)
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars

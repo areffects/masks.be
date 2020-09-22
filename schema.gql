@@ -25,11 +25,26 @@ type TokenObject {
   token: String!
 }
 
+type RatingObject {
+  _id: ObjectId!
+  user: UserObject!
+  type: String!
+  stars: Float!
+}
+
+"""Mongo object id scalar type"""
+scalar ObjectId
+
 type Query {
   findAllTransactionObject: [transactionObject!]!
+  findOneTransactionObject(_id: ObjectId, userId: ObjectId, type: String, amount: Float): transactionObject!
   findOneByIdTransactionObject(id: String!): transactionObject!
   findAllUserObject: [UserObject!]!
+  findOneUserObject(_id: ObjectId, userName: String, lastName: String, email: String, password: String, role: String, status: String): UserObject!
   findOneByIdUserObject(id: String!): UserObject!
+  findAllRatingObject: [RatingObject!]!
+  findOneRatingObject(_id: ObjectId, userId: ObjectId, type: String, stars: Float): RatingObject!
+  findOneByIdRatingObject(id: String!): RatingObject!
 }
 
 type Mutation {
@@ -41,16 +56,19 @@ type Mutation {
   deleteUserObject(id: String!): Boolean!
   loginUser(data: LoginUserObject!): TokenObject!
   registerUser(data: CreateUserInput!): UserObject!
+  createRatingObject(data: CreateRatingInput!): RatingObject!
+  updateRatingObject(data: UpdateRatingInput!, id: String!): RatingObject!
+  deleteRatingObject(id: String!): Boolean!
 }
 
 input createTransactionInput {
-  userId: String!
+  userId: ObjectId!
   type: String!
   amount: Float!
 }
 
 input updateTransactionInput {
-  userId: String!
+  userId: ObjectId!
   type: String!
   amount: Float!
 }
@@ -72,4 +90,16 @@ input UpdateUserInput {
 input LoginUserObject {
   email: String!
   password: String!
+}
+
+input CreateRatingInput {
+  userId: ObjectId!
+  type: String!
+  stars: Float!
+}
+
+input UpdateRatingInput {
+  userId: ObjectId!
+  type: String!
+  stars: Float!
 }

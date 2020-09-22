@@ -8,6 +8,7 @@ import { DatabaseModule } from './modules/database/database.module'
 import { AuthModule } from './modules/auth/auth.module'
 import { UsersModule } from './modules/users/users.module'
 import { GraphQLModule } from '@nestjs/graphql'
+import { RatingsModule } from './modules/ratings/ratings.module'
 
 @Module({
 	imports: [
@@ -15,6 +16,7 @@ import { GraphQLModule } from '@nestjs/graphql'
 		AuthModule,
 		TransactionsModule,
 		UsersModule,
+		RatingsModule,
 		GraphQLModule.forRoot({
 			playground: {
 				settings: {

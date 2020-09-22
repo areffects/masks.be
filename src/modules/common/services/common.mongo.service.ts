@@ -16,7 +16,7 @@ abstract class BaseMongoService<T extends Document, C, U> {
 	}
 
 	async findOneById(id: string): Promise<T> {
-		return this.baseModel.findById(new ObjectId(id)).exec()
+		return this.baseModel.findById(new ObjectId(id))
 	}
 
 	async create(data: any): Promise<T> {
