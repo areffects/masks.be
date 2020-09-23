@@ -1,26 +1,45 @@
 import { NestFactory } from '@nestjs/core'
-import { Logger as SystemLogger } from '@nestjs/common'
+import { Logger as SystemLogger, ValidationPipe } from '@nestjs/common'
 
 import { AppModule } from './app.module'
 
 import { Logger } from './config/logger'
 
-import { PORT, APP_PREFIX } from './environments'
+import { PORT } from './environments'
 
 async function bootstrap() {
-	const app = await NestFactory.create(AppModule, { logger: new Logger() })
-	app.setGlobalPrefix('api/v1');
-	await app.listen(PORT)
-	SystemLogger.log(`Application is running on: ${await app.getUrl()} 🚀`);
+	const isDev = process.env.NODE_ENV === 'development'
+	const app = await NestFactory.create(
+		AppModule,
+		isDev ? {} : { logger: new Logger() }
+	)
 
+	app.setGlobalPrefix('api/v1')
+	app.useGlobalPipes(
+		new ValidationPipe({
+			transform: true
+		})
+	)
+	await app.listen(PORT)
+
+	SystemLogger.log(`Application is running on: ${await app.getUrl()} 🚀`)
+
+	// let currentApp = app
 	if (module && module.hot) {
-		module.hot.accept();
-		module.hot.dispose(() => app.close());
-		SystemLogger.log(`Hot-Module Replacement: started 🔥`);
+		module.hot.accept()
+
+		module.hot.dispose(() => app.close())
+
+		SystemLogger.log(`Hot-Module Replacement: started 🔥`)
 	}
 }
 
-bootstrap().catch(error => {
-	SystemLogger.error(`❌  Error starting server, ${error}`, '', 'Bootstrap', false)
+bootstrap().catch((error) => {
+	SystemLogger.error(
+		`❌  Error starting server, ${error}`,
+		'',
+		'Bootstrap',
+		false
+	)
 	throw error
 })

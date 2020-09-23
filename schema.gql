@@ -1,0 +1,135 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type transactionObject {
+  _id: ID!
+  userId: String!
+  type: String!
+  amount: Float!
+  balance: Float!
+}
+
+type User {
+  _id: ID!
+  userName: String!
+  lastName: String!
+  email: String!
+  password: String!
+  role: String!
+  avatarId: String
+  status: String!
+}
+
+type TokenObject {
+  token: String!
+}
+
+type RatingObject {
+  _id: ObjectId!
+  user: User!
+  type: String!
+  stars: Float!
+}
+
+"""Mongo object id scalar type"""
+scalar ObjectId
+
+type UsersAvatars {
+  _id: ID!
+  userId: ObjectId!
+  name: String!
+  url: String!
+}
+
+type Query {
+  findAllTransactionObject: [transactionObject!]!
+  findOneTransactionObject(_id: ObjectId, userId: ObjectId, type: String, amount: Float): transactionObject!
+  findOneByIdTransactionObject(id: String!): transactionObject!
+  findAllUser: [User!]!
+  findOneUser(_id: ObjectId, userName: String, lastName: String, email: String, password: String, role: String, status: String): User!
+  findOneByIdUser(id: String!): User!
+  findAllRatingObject: [RatingObject!]!
+  findOneRatingObject(_id: ObjectId, userId: ObjectId, type: String, stars: Float): RatingObject!
+  findOneByIdRatingObject(id: String!): RatingObject!
+  findAllUsersAvatars: [UsersAvatars!]!
+  findOneUsersAvatars(userId: ObjectId!, name: String!, url: String!): UsersAvatars!
+  findOneByIdUsersAvatars(id: String!): UsersAvatars!
+}
+
+type Mutation {
+  createTransactionObject(data: createTransactionInput!): transactionObject!
+  updateTransactionObject(data: updateTransactionInput!, id: String!): transactionObject!
+  deleteTransactionObject(id: String!): Boolean!
+  createUser(data: CreateUserInput!): User!
+  updateUser(data: UpdateUserInput!, id: String!): User!
+  deleteUser(id: String!): Boolean!
+  loginUser(data: LoginUserObject!): TokenObject!
+  registerUser(data: CreateUserInput!): User!
+  createRatingObject(data: CreateRatingInput!): RatingObject!
+  updateRatingObject(data: UpdateRatingInput!, id: String!): RatingObject!
+  deleteRatingObject(id: String!): Boolean!
+  createUsersAvatars(data: CreateUsersAvatarsInput!): UsersAvatars!
+  updateUsersAvatars(data: UpdateUsersAvatarsInput!, id: String!): UsersAvatars!
+  deleteUsersAvatars(id: String!): Boolean!
+  uploadFile(file: Upload!): Boolean!
+  uploadFiles(files: [Upload!]!): Boolean!
+}
+
+input createTransactionInput {
+  userId: ObjectId!
+  type: String!
+  amount: Float!
+}
+
+input updateTransactionInput {
+  userId: ObjectId!
+  type: String!
+  amount: Float!
+}
+
+input CreateUserInput {
+  userName: String!
+  lastName: String!
+  email: String!
+  password: String!
+}
+
+input UpdateUserInput {
+  userName: String!
+  lastName: String!
+  email: String!
+  password: String!
+}
+
+input LoginUserObject {
+  email: String!
+  password: String!
+}
+
+input CreateRatingInput {
+  userId: ObjectId!
+  type: String!
+  stars: Float!
+}
+
+input UpdateRatingInput {
+  userId: ObjectId!
+  type: String!
+  stars: Float!
+}
+
+input CreateUsersAvatarsInput {
+  userId: ObjectId!
+  name: String!
+  url: String!
+}
+
+input UpdateUsersAvatarsInput {
+  userId: ObjectId!
+  name: String!
+  url: String!
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
