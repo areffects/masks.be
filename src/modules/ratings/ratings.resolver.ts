@@ -8,6 +8,8 @@ import { User } from '../users/dto/user.object'
 import { UsersService } from '../users/users.service'
 import { Rating } from './models/ratings.schema'
 import { RatingArgs } from './dto/ratings.args'
+import { Roles } from '../auth/decorators/roles.decorator'
+import { ADMIN, USER } from '../users/constants/roles'
 
 @Resolver(() => RatingObject)
 export class RatingsResolver extends BaseResolver<
@@ -24,6 +26,7 @@ export class RatingsResolver extends BaseResolver<
 	}
 
 	@ResolveField('user', () => User)
+	@Roles(ADMIN, USER)
 	async getUser(@Parent() rating: Rating): Promise<User> {
 		return this.usersService.findOneById(rating.userId)
 	}

@@ -1,12 +1,11 @@
-import { v4 } from 'uuid'
 import { Model } from 'mongoose'
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { UsersAvatars } from './models/users-avatars.schema'
-import { BaseMongoService } from '../common/services/common.mongo.service'
+import { BaseMongoService } from '../common/services/mongo.service'
 import { CreateUsersAvatarsInput } from './dto/create-users-avatars.input'
 import { UpdateUsersAvatarsInput } from './dto/update-user-avatars.input'
-import { createWriteStream } from 'fs'
+import { createWriteStream, mkdirSync } from 'fs'
 @Injectable()
 export class UsersAvatarsService extends BaseMongoService<
 	UsersAvatars,
@@ -20,12 +19,12 @@ export class UsersAvatarsService extends BaseMongoService<
 		super(usersAvatarsModel)
 	}
 
-	async uploadFile({ createReadStream, filename }) {
-		const generatedUuid = v4().substr(0, 10)
+	async uploadFile({ createReadStream, rootDir, fileName }) {
+		mkdirSync(rootDir, { recursive: true })
 
 		return new Promise((resolve, reject) =>
 			createReadStream()
-				.pipe(createWriteStream(`./uploads/${generatedUuid}${filename}`))
+				.pipe(createWriteStream(`${rootDir}${fileName}`))
 				.on('finish', () => resolve(true))
 				.on('error', () => reject(false))
 		)

@@ -33,6 +33,10 @@ export class RolesGuard implements CanActivate {
 	async canActivate(context: ExecutionContext) {
 		const roles = this.reflector.get<string[]>('roles', context.getHandler())
 
+		if (!roles) {
+			return true
+		}
+
 		const request = this.getRequest(context)
 		if (!request.headers.authorization) {
 			throw new UnauthorizedException(TOKEN_DOESNT_EXIST)
@@ -40,6 +44,9 @@ export class RolesGuard implements CanActivate {
 		const validatedUser: UserSchema = await this.validateUser(
 			request.headers.authorization
 		)
+
+		request.user = validatedUser
+
 		const findedUser: UserSchema = await this.authService.findUserByEmail(
 			validatedUser.email
 		)
@@ -55,10 +62,6 @@ export class RolesGuard implements CanActivate {
 			throw new UnauthorizedException(INVALID_USER)
 		}
 
-		request.user = validatedUser
-		if (!roles || !roles.length) {
-			return true
-		}
 		const user: UserSchema = request.user
 		const roleMatch = roles.some((role) => role === user.role)
 		return roleMatch

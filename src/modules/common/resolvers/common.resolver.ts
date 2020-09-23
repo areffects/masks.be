@@ -5,7 +5,7 @@ import { Roles } from 'src/modules/auth/decorators/roles.decorator'
 import { ADMIN, USER } from 'src/modules/users/constants/roles'
 import { DATA, ObjectId } from '../constants/common'
 import { ClassValidatorValidationPipe } from '../pipes/class-validator.validation.pipe'
-import { BaseMongoService } from '../services/common.mongo.service'
+import { BaseMongoService } from '../services/mongo.service'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function BaseResolver<T, C, U, ARG>(
