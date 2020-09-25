@@ -17,9 +17,6 @@ export class User {
 	email: string
 
 	@Field()
-	password: string
-
-	@Field()
 	role: string
 
 	@Field({ nullable: true })

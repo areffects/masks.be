@@ -56,6 +56,11 @@ export class UsersAvatarsResolver extends BaseResolver<
 				fileName: generatedFileName,
 				fullPath
 			})
+
+			this.fileService.getPresignedUrl({
+				bucketName: USERS_AVATARS_BUCKET_NAME,
+				fileName: generatedFileName
+			})
 			// uploadFile('./uploads/ec2.pem')
 			await this.usersAvatarsService.create({
 				url: generatedFileName,

@@ -15,7 +15,6 @@ type User {
   userName: String!
   lastName: String!
   email: String!
-  password: String!
   role: String!
   avatarId: String
   status: String!

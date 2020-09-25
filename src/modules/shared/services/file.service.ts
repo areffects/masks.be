@@ -16,12 +16,24 @@ export class FileService {
 	getS3Instance() {
 		return new S3({
 			accessKeyId: AWS_ID,
-			secretAccessKey: AWS_SECRET
+			secretAccessKey: AWS_SECRET,
+			signatureVersion: 'v4'
 		})
 	}
 	generateName({ filename }) {
 		const { ext } = parse(filename)
 		return v4().substr(0, 8).concat(ext)
+	}
+
+	async getPresignedUrl({ bucketName, fileName }) {
+		const s3 = this.getS3Instance()
+		const signedUrlExpireSeconds = 60 * 5
+		const url = s3.getSignedUrl('getObject', {
+			Bucket: bucketName,
+			Key: fileName,
+			Expires: signedUrlExpireSeconds
+		})
+		return url
 	}
 
 	async uploadToS3File({ bucketName, fileName, fullPath }) {
@@ -30,7 +42,7 @@ export class FileService {
 		const s3 = this.getS3Instance()
 		const params = {
 			Bucket: bucketName,
-			Key: `asdwa/${fileName}`, // File name you want to save as in S3
+			Key: fileName, // File name you want to save as in S3
 			Body: fileContent,
 			CreateBucketConfiguration: {
 				// Set your region here

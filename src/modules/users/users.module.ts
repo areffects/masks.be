@@ -1,4 +1,4 @@
-import { genSalt, hash } from 'bcrypt'
+import { genSalt, hash } from 'bcryptjs'
 import { Module } from '@nestjs/common'
 import { UsersService } from './users.service'
 import { MongooseModule } from '@nestjs/mongoose'

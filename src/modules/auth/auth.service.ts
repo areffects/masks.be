@@ -1,4 +1,4 @@
-import { compareSync } from 'bcrypt'
+import { compareSync } from 'bcryptjs'
 import { Injectable } from '@nestjs/common'
 import { UsersService } from '../users/users.service'
 import { JwtService } from '@nestjs/jwt'
