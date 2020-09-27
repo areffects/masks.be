@@ -4,6 +4,7 @@ import { UsersService } from './users.service'
 import { MongooseModule } from '@nestjs/mongoose'
 import { User, UserSchema } from './models/users.schema'
 import { UsersResolver } from './users.resolver'
+import { v4 } from 'uuid'
 
 @Module({
 	imports: [
@@ -18,6 +19,7 @@ import { UsersResolver } from './users.resolver'
 						const salt = await genSalt(10)
 						const hashedPassword = await hash(user.password, salt)
 						user.password = hashedPassword
+						user.userName = user.userName || v4().substr(0, 10)
 						next()
 					})
 					return schema

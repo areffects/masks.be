@@ -10,6 +10,9 @@ export class User {
 	userName: string
 
 	@Field()
+	firstName: string
+
+	@Field()
 	lastName: string
 
 	@Field()

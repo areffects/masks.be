@@ -9,7 +9,10 @@ import { SharedModule } from '../shared/shared.module'
 	imports: [
 		SharedModule,
 		MongooseModule.forFeature([
-			{ name: UsersAvatars.name, schema: UsersAvatarsSchema }
+			{
+				name: UsersAvatars.name,
+				schema: UsersAvatarsSchema
+			}
 		])
 	],
 	providers: [UsersAvatarsResolver, UsersAvatarsService],

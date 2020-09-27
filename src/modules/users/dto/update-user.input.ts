@@ -1,15 +1,17 @@
 import { Field, InputType } from '@nestjs/graphql'
-import { IsEmail, Matches } from 'class-validator'
+import { IsEmail, Length, Matches } from 'class-validator'
 
 @InputType()
 export class UpdateUserInput {
-	@Field()
-	userName: string
+	@Field({ nullable: true })
+	@Length(0, 20)
+	firstName: string
 
-	@Field()
+	@Field({ nullable: true })
+	@Length(0, 20)
 	lastName: string
 
-	@Field()
+	@Field({ nullable: true })
 	@IsEmail()
 	email: string
 
@@ -18,7 +20,7 @@ export class UpdateUserInput {
 	- must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number
 	- Can contain special characters
  */
-	@Field()
+	@Field({ nullable: true })
 	@Matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,20}$/)
 	password: string
 }

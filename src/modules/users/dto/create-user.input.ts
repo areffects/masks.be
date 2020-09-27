@@ -3,11 +3,16 @@ import { IsEmail, Length, Matches } from 'class-validator'
 
 @InputType()
 export class CreateUserInput {
-	@Field()
+	@Field({ nullable: true })
+	@Length(0, 10)
 	userName: string
 
 	@Field()
-	@Length(0, 5)
+	@Length(0, 20)
+	firstName: string
+
+	@Field()
+	@Length(0, 20)
 	lastName: string
 
 	@Field()

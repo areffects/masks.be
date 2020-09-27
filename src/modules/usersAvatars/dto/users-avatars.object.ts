@@ -12,6 +12,12 @@ export class UsersAvatars {
 	@Field()
 	name: string
 
-	@Field()
+	@Field({ nullable: true })
 	url: string
+
+	@Field()
+	createdAt: Date
+
+	@Field()
+	updatedAt: Date
 }

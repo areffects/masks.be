@@ -3,12 +3,9 @@ import { ObjectIdScalar } from 'src/modules/common/scalars/objectId.scalar'
 
 @InputType()
 export class UpdateUsersAvatarsInput {
-	@Field(() => ObjectIdScalar)
+	@Field(() => ObjectIdScalar, { nullable: true })
 	userId: string
 
-	@Field()
+	@Field({ nullable: true })
 	name: string
-
-	@Field()
-	url: string
 }

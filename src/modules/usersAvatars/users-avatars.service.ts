@@ -5,7 +5,6 @@ import { UsersAvatars } from './models/users-avatars.schema'
 import { BaseMongoService } from '../common/services/mongo.service'
 import { CreateUsersAvatarsInput } from './dto/create-users-avatars.input'
 import { UpdateUsersAvatarsInput } from './dto/update-user-avatars.input'
-import { createWriteStream, mkdirSync } from 'fs'
 @Injectable()
 export class UsersAvatarsService extends BaseMongoService<
 	UsersAvatars,
@@ -17,16 +16,5 @@ export class UsersAvatarsService extends BaseMongoService<
 		private usersAvatarsModel: Model<UsersAvatars>
 	) {
 		super(usersAvatarsModel)
-	}
-
-	async uploadFile({ createReadStream, rootDir, fileName }) {
-		mkdirSync(rootDir, { recursive: true })
-
-		return new Promise((resolve, reject) =>
-			createReadStream()
-				.pipe(createWriteStream(`${rootDir}${fileName}`))
-				.on('finish', () => resolve(true))
-				.on('error', () => reject(false))
-		)
 	}
 }

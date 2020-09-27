@@ -9,7 +9,4 @@ export class CreateUsersAvatarsInput {
 
 	@Field()
 	name: string
-
-	@Field()
-	url: string
 }

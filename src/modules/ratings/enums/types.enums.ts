@@ -1,4 +1,4 @@
-export enum AllowedColor {
+export enum RatingTypesEnum {
 	'PATCHES',
 	'3D',
 	'READY_EFFECT',

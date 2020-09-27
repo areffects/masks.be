@@ -12,6 +12,8 @@ import { FileService } from '../shared/services/file.service'
 import { Inject, InternalServerErrorException } from '@nestjs/common'
 import { FileUpload } from 'graphql-upload'
 import { USERS_AVATARS_BUCKET_NAME } from 'src/environments'
+import { Roles } from '../auth/decorators/roles.decorator'
+import { ADMIN, USER } from '../users/constants/roles'
 
 @Resolver(() => UsersAvatars)
 export class UsersAvatarsResolver extends BaseResolver<
@@ -34,6 +36,7 @@ export class UsersAvatarsResolver extends BaseResolver<
 	}
 
 	@Mutation(() => Boolean)
+	@Roles(ADMIN, USER)
 	async uploadFile(
 		@CurrentUser() user: User,
 		@Args({ name: 'file', type: () => GraphQLUpload })
@@ -42,29 +45,15 @@ export class UsersAvatarsResolver extends BaseResolver<
 		const generatedFileName = this.fileService.generateName({
 			filename
 		})
-		const fullPath = `${this.rootDir}${generatedFileName}`
-
+		const fullFileName = `${user.userName}.${generatedFileName}`
 		try {
-			await this.usersAvatarsService.uploadFile({
-				createReadStream,
-				rootDir: this.rootDir,
-				fileName: generatedFileName
-			})
-
 			await this.fileService.uploadToS3File({
 				bucketName: USERS_AVATARS_BUCKET_NAME,
-				fileName: generatedFileName,
-				fullPath
+				fileName: fullFileName,
+				createReadStream
 			})
-
-			this.fileService.getPresignedUrl({
-				bucketName: USERS_AVATARS_BUCKET_NAME,
-				fileName: generatedFileName
-			})
-			// uploadFile('./uploads/ec2.pem')
 			await this.usersAvatarsService.create({
-				url: generatedFileName,
-				name: generatedFileName,
+				name: fullFileName,
 				userId: user.id
 			})
 		} catch (e) {
@@ -74,6 +63,7 @@ export class UsersAvatarsResolver extends BaseResolver<
 	}
 
 	@Mutation(() => Boolean)
+	@Roles(ADMIN, USER)
 	async uploadFiles(
 		@CurrentUser() user: User,
 		@Args({ name: 'files', type: () => [GraphQLUpload] })
@@ -84,24 +74,17 @@ export class UsersAvatarsResolver extends BaseResolver<
 			await Promise.all(
 				files.map(async (file: FileUpload) => {
 					const { createReadStream, filename } = file
-
 					const generatedFileName = this.fileService.generateName({
 						filename
 					})
-					const fullPath = `${this.rootDir}${generatedFileName}`
-					await this.usersAvatarsService.uploadFile({
-						createReadStream,
-						rootDir: this.rotDir,
-						fileName: generatedFileName
-					})
+					const fullFileName = `${user.userName}.${generatedFileName}`
 					await this.fileService.uploadToS3File({
 						bucketName: USERS_AVATARS_BUCKET_NAME,
-						fileName: generatedFileName,
-						fullPath
+						fileName: fullFileName,
+						createReadStream
 					})
 					return this.usersAvatarsService.create({
-						url: generatedFileName,
-						name: generatedFileName,
+						name: fullFileName,
 						userId: user.id
 					})
 				})

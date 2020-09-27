@@ -13,6 +13,7 @@ type transactionObject {
 type User {
   _id: ID!
   userName: String!
+  firstName: String!
   lastName: String!
   email: String!
   role: String!
@@ -38,8 +39,15 @@ type UsersAvatars {
   _id: ID!
   userId: ObjectId!
   name: String!
-  url: String!
+  url: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 type Query {
   findAllTransactionObject: [transactionObject!]!
@@ -88,17 +96,18 @@ input updateTransactionInput {
 }
 
 input CreateUserInput {
-  userName: String!
+  userName: String
+  firstName: String!
   lastName: String!
   email: String!
   password: String!
 }
 
 input UpdateUserInput {
-  userName: String!
-  lastName: String!
-  email: String!
-  password: String!
+  firstName: String
+  lastName: String
+  email: String
+  password: String
 }
 
 input LoginUserObject {
@@ -121,13 +130,11 @@ input UpdateRatingInput {
 input CreateUsersAvatarsInput {
   userId: ObjectId!
   name: String!
-  url: String!
 }
 
 input UpdateUsersAvatarsInput {
-  userId: ObjectId!
-  name: String!
-  url: String!
+  userId: ObjectId
+  name: String
 }
 
 """The `Upload` scalar type represents a file upload."""

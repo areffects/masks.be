@@ -23,10 +23,13 @@ export class User extends Document {
 	})
 	_id: string
 
-	@Prop({ required: true })
+	@Prop({ unique: true })
 	userName: string
 
-	@Prop({ unique: true, required: true })
+	@Prop({ required: true })
+	firstName: string
+
+	@Prop({ required: true })
 	lastName: string
 
 	@Prop({

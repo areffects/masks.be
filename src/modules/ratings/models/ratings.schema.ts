@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { Document, Types } from 'mongoose'
 import { ObjectId } from '../../common/constants/common'
+import { RatingTypesEnum } from '../enums/types.enums'
 
 @Schema({ timestamps: true })
 export class Rating extends Document {
@@ -20,7 +21,7 @@ export class Rating extends Document {
 	userId: string
 
 	@Prop()
-	type: string
+	type: RatingTypesEnum
 
 	@Prop()
 	stars: number
