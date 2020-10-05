@@ -1,13 +1,16 @@
 import { Module } from '@nestjs/common'
 import { TransactionsService } from './transactions.service'
 import { MongooseModule } from '@nestjs/mongoose'
-import { Transaction, TransactionSchema } from './models/transactions.schema'
+import {
+	TransactionModel,
+	TransactionSchema
+} from './models/transactions.schema'
 import { TransactionsResolver } from './transactions.resolver'
 
 @Module({
 	imports: [
 		MongooseModule.forFeature([
-			{ name: Transaction.name, schema: TransactionSchema }
+			{ name: TransactionModel.name, schema: TransactionSchema }
 		])
 	],
 	providers: [TransactionsResolver, TransactionsService]

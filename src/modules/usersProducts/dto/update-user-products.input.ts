@@ -1,4 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql'
+import { UsersProductsTypes } from '../enums/types.enums'
 
 @InputType()
 export class UpdateUsersProductsInput {
@@ -8,12 +9,6 @@ export class UpdateUsersProductsInput {
 	@Field({ nullable: true })
 	description: string
 
-	@Field({ nullable: true })
-	rate: number
-
-	@Field({ nullable: true })
-	type: string
-
-	@Field({ nullable: true })
-	downloads: number
+	@Field(() => UsersProductsTypes, { nullable: true })
+	type: UsersProductsTypes
 }

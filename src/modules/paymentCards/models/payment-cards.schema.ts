@@ -3,7 +3,7 @@ import { Document, Types } from 'mongoose'
 import { ObjectId } from '../../common/constants/common'
 
 @Schema({ timestamps: true })
-export class TransactionModel extends Document {
+export class PaymentCardsModel extends Document {
 	@Prop({
 		type: Types.ObjectId,
 		index: true,
@@ -12,17 +12,21 @@ export class TransactionModel extends Document {
 	})
 	_id: string
 
+	@Prop({
+		type: Types.ObjectId,
+		index: true,
+		required: true
+	})
+	@Prop({ unique: true, required: true })
+	userId: string
+
 	@Prop({ required: true })
-	userId: number
-
-	@Prop()
-	type: string
+	pin: string
 
 	@Prop({ required: true })
-	amount: number
-
-	@Prop()
-	balance: number
+	date: string
 }
 
-export const TransactionSchema = SchemaFactory.createForClass(TransactionModel)
+export const PaymentCardsSchema = SchemaFactory.createForClass(
+	PaymentCardsModel
+)

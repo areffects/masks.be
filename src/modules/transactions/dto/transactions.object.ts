@@ -1,7 +1,7 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql'
 
-@ObjectType('transactionObject')
-export class TransactionObject {
+@ObjectType()
+export class Transaction {
 	@Field(() => ID)
 	_id: string
 
@@ -16,4 +16,10 @@ export class TransactionObject {
 
 	@Field()
 	balance: number
+
+	@Field()
+	createdAt: Date
+
+	@Field()
+	updatedAt: Date
 }

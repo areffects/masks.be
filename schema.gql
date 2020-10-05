@@ -2,13 +2,20 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type transactionObject {
+type Transaction {
   _id: ID!
   userId: String!
   type: String!
   amount: Float!
   balance: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 type User {
   _id: ID!
@@ -25,7 +32,7 @@ type TokenObject {
   token: String!
 }
 
-type RatingObject {
+type Leaderboard {
   _id: ObjectId!
   user: User!
   type: String!
@@ -44,43 +51,88 @@ type UsersAvatars {
   updatedAt: DateTime!
 }
 
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
+type UsersProducts {
+  _id: ID!
+  name: String!
+  description: String!
+  rating: Float!
+  type: UsersProductsTypes!
+  downloads: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum UsersProductsTypes {
+  COMMERCIAL
+  PUBLIC
+}
+
+type PaymentCards {
+  _id: ObjectId!
+  user: User!
+  numbers: String!
+  pin: String!
+  date: String!
+}
+
+type PaymentOrder {
+  _id: ObjectId!
+  user: User
+  product: UsersProducts
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
 
 type Query {
-  findAllTransactionObject: [transactionObject!]!
-  findOneTransactionObject(_id: ObjectId, userId: ObjectId, type: String, amount: Float): transactionObject!
-  findOneByIdTransactionObject(id: String!): transactionObject!
-  findAllUser: [User!]!
+  findAllTransaction(_id: ObjectId, userId: ObjectId, type: String, amount: Float): [Transaction!]!
+  findOneTransaction(_id: ObjectId, userId: ObjectId, type: String, amount: Float): Transaction!
+  findOneByIdTransaction(id: String!): Transaction!
+  findAllUser(_id: ObjectId, userName: String, lastName: String, email: String, password: String, role: String, status: String): [User!]!
   findOneUser(_id: ObjectId, userName: String, lastName: String, email: String, password: String, role: String, status: String): User!
   findOneByIdUser(id: String!): User!
-  findAllRatingObject: [RatingObject!]!
-  findOneRatingObject(_id: ObjectId, userId: ObjectId, type: String, stars: Float): RatingObject!
-  findOneByIdRatingObject(id: String!): RatingObject!
-  findAllUsersAvatars: [UsersAvatars!]!
+  findAllLeaderboard(_id: ObjectId, userId: ObjectId, type: String, stars: Float): [Leaderboard!]!
+  findOneLeaderboard(_id: ObjectId, userId: ObjectId, type: String, stars: Float): Leaderboard!
+  findOneByIdLeaderboard(id: String!): Leaderboard!
+  findAllUsersAvatars(userId: ObjectId!, name: String!, url: String!): [UsersAvatars!]!
   findOneUsersAvatars(userId: ObjectId!, name: String!, url: String!): UsersAvatars!
   findOneByIdUsersAvatars(id: String!): UsersAvatars!
+  findAllUsersProducts(_id: ID, name: String, description: String, rating: Float, type: UsersProductsTypes, downloads: Float): [UsersProducts!]!
+  findOneUsersProducts(_id: ID, name: String, description: String, rating: Float, type: UsersProductsTypes, downloads: Float): UsersProducts!
+  findOneByIdUsersProducts(id: String!): UsersProducts!
+  findAllPaymentCards(_id: ObjectId, numbers: String, pin: String, date: String): [PaymentCards!]!
+  findOnePaymentCards(_id: ObjectId, numbers: String, pin: String, date: String): PaymentCards!
+  findOneByIdPaymentCards(id: String!): PaymentCards!
+  findAllPaymentOrder(_id: ObjectId, userId: String, productId: String): [PaymentOrder!]!
+  findOnePaymentOrder(_id: ObjectId, userId: String, productId: String): PaymentOrder!
+  findOneByIdPaymentOrder(id: String!): PaymentOrder!
 }
 
 type Mutation {
-  createTransactionObject(data: createTransactionInput!): transactionObject!
-  updateTransactionObject(data: updateTransactionInput!, id: String!): transactionObject!
-  deleteTransactionObject(id: String!): Boolean!
+  createTransaction(data: createTransactionInput!): Transaction!
+  updateTransaction(data: updateTransactionInput!, id: String!): Transaction!
+  deleteTransaction(id: String!): Boolean!
+  loginUser(data: LoginUserObject!): TokenObject!
+  registerUser(data: CreateUserInput!): User!
   createUser(data: CreateUserInput!): User!
   updateUser(data: UpdateUserInput!, id: String!): User!
   deleteUser(id: String!): Boolean!
-  loginUser(data: LoginUserObject!): TokenObject!
-  registerUser(data: CreateUserInput!): User!
-  createRatingObject(data: CreateRatingInput!): RatingObject!
-  updateRatingObject(data: UpdateRatingInput!, id: String!): RatingObject!
-  deleteRatingObject(id: String!): Boolean!
+  createLeaderboard(data: CreateLeaderInput!): Leaderboard!
+  updateLeaderboard(data: UpdateLeaderInput!, id: String!): Leaderboard!
+  deleteLeaderboard(id: String!): Boolean!
   createUsersAvatars(data: CreateUsersAvatarsInput!): UsersAvatars!
   updateUsersAvatars(data: UpdateUsersAvatarsInput!, id: String!): UsersAvatars!
   deleteUsersAvatars(id: String!): Boolean!
   uploadFile(file: Upload!): Boolean!
   uploadFiles(files: [Upload!]!): Boolean!
+  createUsersProducts(data: CreateUsersProductsInput!): UsersProducts!
+  updateUsersProducts(data: UpdateUsersProductsInput!, id: String!): UsersProducts!
+  deleteUsersProducts(id: String!): Boolean!
+  createPaymentCards(data: CreatePaymentCardsInput!): PaymentCards!
+  updatePaymentCards(data: UpdatePaymentCardsInput!, id: String!): PaymentCards!
+  deletePaymentCards(id: String!): Boolean!
+  createPaymentOrder(data: CreatePaymentOrderInput!): PaymentOrder!
+  updatePaymentOrder(data: UpdatePaymentOrderInput!, id: String!): PaymentOrder!
+  deletePaymentOrder(id: String!): Boolean!
 }
 
 input createTransactionInput {
@@ -93,6 +145,11 @@ input updateTransactionInput {
   userId: ObjectId!
   type: String!
   amount: Float!
+}
+
+input LoginUserObject {
+  email: String!
+  password: String!
 }
 
 input CreateUserInput {
@@ -110,18 +167,13 @@ input UpdateUserInput {
   password: String
 }
 
-input LoginUserObject {
-  email: String!
-  password: String!
-}
-
-input CreateRatingInput {
+input CreateLeaderInput {
   userId: ObjectId!
   type: String!
   stars: Float!
 }
 
-input UpdateRatingInput {
+input UpdateLeaderInput {
   userId: ObjectId!
   type: String!
   stars: Float!
@@ -139,3 +191,37 @@ input UpdateUsersAvatarsInput {
 
 """The `Upload` scalar type represents a file upload."""
 scalar Upload
+
+input CreateUsersProductsInput {
+  name: String!
+  description: String!
+  type: UsersProductsTypes
+}
+
+input UpdateUsersProductsInput {
+  name: String
+  description: String
+  type: UsersProductsTypes
+}
+
+input CreatePaymentCardsInput {
+  numbers: String!
+  pin: String!
+  date: String!
+}
+
+input UpdatePaymentCardsInput {
+  numbers: String
+  pin: String
+  date: String
+}
+
+input CreatePaymentOrderInput {
+  userId: String!
+  productId: String!
+}
+
+input UpdatePaymentOrderInput {
+  userId: String!
+  productId: String!
+}

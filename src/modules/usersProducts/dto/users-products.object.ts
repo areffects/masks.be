@@ -1,4 +1,5 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql'
+import { UsersProductsTypes } from '../enums/types.enums'
 
 @ObjectType()
 export class UsersProducts {
@@ -12,10 +13,10 @@ export class UsersProducts {
 	description: string
 
 	@Field()
-	rate: number
+	rating: number
 
-	@Field()
-	type: string
+	@Field(() => UsersProductsTypes)
+	type: UsersProductsTypes
 
 	@Field()
 	downloads: number

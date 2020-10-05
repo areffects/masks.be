@@ -6,7 +6,7 @@ import { UsersProductsTypes } from '../enums/types.enums'
 @Schema({
 	timestamps: true
 })
-export class UsersProducts extends Document {
+export class UsersProductsModel extends Document {
 	@Prop({
 		type: Types.ObjectId,
 		index: true,
@@ -31,4 +31,6 @@ export class UsersProducts extends Document {
 	downloads: number
 }
 
-export const UsersProductsSchema = SchemaFactory.createForClass(UsersProducts)
+export const UsersProductsSchema = SchemaFactory.createForClass(
+	UsersProductsModel
+)

@@ -7,8 +7,8 @@ import { ObjectId } from '../constants/common'
 abstract class BaseMongoService<T extends Document, C, U> {
 	constructor(private readonly baseModel: Model<T>) {}
 
-	async findAll(): Promise<T[]> {
-		return this.baseModel.find().exec()
+	async findAll(data): Promise<T[]> {
+		return this.baseModel.find(data).exec()
 	}
 
 	async findOne(data: FilterQuery<T>, select = {}): Promise<T> {

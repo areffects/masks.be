@@ -1,9 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { Document, Types } from 'mongoose'
 import { ObjectId } from '../../common/constants/common'
+import { RatingTypesEnum } from '../enums/types.enums'
 
 @Schema({ timestamps: true })
-export class TransactionModel extends Document {
+export class LeaderboardModel extends Document {
 	@Prop({
 		type: Types.ObjectId,
 		index: true,
@@ -12,17 +13,18 @@ export class TransactionModel extends Document {
 	})
 	_id: string
 
-	@Prop({ required: true })
-	userId: number
+	@Prop({
+		type: Types.ObjectId,
+		index: true,
+		required: true
+	})
+	userId: string
 
 	@Prop()
-	type: string
-
-	@Prop({ required: true })
-	amount: number
+	type: RatingTypesEnum
 
 	@Prop()
-	balance: number
+	stars: number
 }
 
-export const TransactionSchema = SchemaFactory.createForClass(TransactionModel)
+export const LeaderboardSchema = SchemaFactory.createForClass(LeaderboardModel)

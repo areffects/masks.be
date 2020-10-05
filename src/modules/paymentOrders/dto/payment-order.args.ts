@@ -3,16 +3,13 @@ import { Types } from 'mongoose'
 import { ObjectIdScalar } from 'src/modules/common/scalars/objectId.scalar'
 
 @ArgsType()
-export class RatingArgs {
+export class PaymentOrderArgs {
 	@Field(() => ObjectIdScalar, { nullable: true })
 	_id: Types.ObjectId
 
-	@Field(() => ObjectIdScalar, { nullable: true })
-	userId: Types.ObjectId
+	@Field({ nullable: true })
+	userId: string
 
 	@Field({ nullable: true })
-	type: string
-
-	@Field({ nullable: true })
-	stars: number
+	productId: string
 }

@@ -1,10 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { Document, Types } from 'mongoose'
 import { ObjectId } from '../../common/constants/common'
-import { RatingTypesEnum } from '../enums/types.enums'
 
 @Schema({ timestamps: true })
-export class Rating extends Document {
+export class PaymentOrdersModel extends Document {
 	@Prop({
 		type: Types.ObjectId,
 		index: true,
@@ -18,13 +17,18 @@ export class Rating extends Document {
 		index: true,
 		required: true
 	})
+	@Prop({ required: true })
 	userId: string
 
-	@Prop()
-	type: RatingTypesEnum
-
-	@Prop()
-	stars: number
+	@Prop({
+		type: Types.ObjectId,
+		index: true,
+		required: true
+	})
+	@Prop({ required: true })
+	productId: string
 }
 
-export const RatingSchema = SchemaFactory.createForClass(Rating)
+export const PaymentOrdersSchema = SchemaFactory.createForClass(
+	PaymentOrdersModel
+)

@@ -2,7 +2,6 @@ import { compareSync } from 'bcryptjs'
 import { Injectable } from '@nestjs/common'
 import { UsersService } from '../users/users.service'
 import { JwtService } from '@nestjs/jwt'
-// import { User } from '../users/dto/user.object'
 import { TokenObject } from './dto/token.dto'
 import { User as UserSchema } from '../users/models/users.schema'
 

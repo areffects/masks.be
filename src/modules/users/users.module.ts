@@ -1,11 +1,12 @@
 import { genSalt, hash } from 'bcryptjs'
-import { Module } from '@nestjs/common'
+import { Global, Module } from '@nestjs/common'
 import { UsersService } from './users.service'
 import { MongooseModule } from '@nestjs/mongoose'
 import { User, UserSchema } from './models/users.schema'
 import { UsersResolver } from './users.resolver'
 import { v4 } from 'uuid'
 
+@Global()
 @Module({
 	imports: [
 		MongooseModule.forFeatureAsync([

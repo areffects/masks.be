@@ -1,9 +1,8 @@
 import { Field, InputType } from '@nestjs/graphql'
-
 import { ObjectIdScalar } from 'src/modules/common/scalars/objectId.scalar'
 
 @InputType()
-export class CreateRatingInput {
+export class UpdateLeaderInput {
 	@Field(() => ObjectIdScalar)
 	userId: string
 

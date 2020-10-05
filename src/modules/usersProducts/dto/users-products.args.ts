@@ -1,22 +1,23 @@
 import { ArgsType, Field, ID } from '@nestjs/graphql'
+import { UsersProductsTypes } from '../enums/types.enums'
 
 @ArgsType()
 export class UsersProductsArgs {
-	@Field(() => ID)
+	@Field(() => ID, { nullable: true })
 	_id?: string
 
-	@Field()
+	@Field({ nullable: true })
 	name: string
 
-	@Field()
+	@Field({ nullable: true })
 	description: string
 
-	@Field()
-	rate: number
+	@Field({ nullable: true })
+	rating: number
 
-	@Field()
-	type: string
+	@Field(() => UsersProductsTypes, { nullable: true })
+	type: UsersProductsTypes
 
-	@Field()
+	@Field({ nullable: true })
 	downloads: number
 }

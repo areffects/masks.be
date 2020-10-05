@@ -21,4 +21,16 @@ export class UsersProductsResolver extends BaseResolver<
 	constructor(private readonly usersProductsService: UsersProductsService) {
 		super(usersProductsService)
 	}
+
+	// @Mutation(() => classRef, {
+	// 	name: `create${classRef.name}`
+	// })
+	// @Roles(ADMIN, USER)
+	// @UsePipes(new ClassValidatorValidationPipe(createClassRef))
+	// async create(
+	// 	@Args({ name: DATA, type: () => createClassRef })
+	// 	createData: CreateQuery<C>
+	// ): Promise<T> {
+	// 	return this.baseService.create(createData)
+	// }
 }

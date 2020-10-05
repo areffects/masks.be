@@ -22,8 +22,14 @@ export default function BaseResolver<T, C, U, ARG>(
 
 		@Query(() => [classRef], { name: `findAll${classRef.name}` })
 		@Roles(ADMIN, USER)
-		async findAll(): Promise<T[]> {
-			return this.baseService.findAll()
+		async findAll(
+			@Args({ type: () => argClassRef })
+			data
+		): Promise<T[]> {
+			if (data._id) {
+				data._id = new ObjectId(data._id)
+			}
+			return this.baseService.findAll(data)
 		}
 
 		@Query(() => classRef, { name: `findOne${classRef.name}` })

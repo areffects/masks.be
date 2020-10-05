@@ -8,8 +8,11 @@ import { DatabaseModule } from './modules/database/database.module'
 import { AuthModule } from './modules/auth/auth.module'
 import { UsersModule } from './modules/users/users.module'
 import { GraphQLModule } from '@nestjs/graphql'
-import { RatingsModule } from './modules/ratings/ratings.module'
+import { LeaderboardsModule } from './modules/leaderboards/leaderboards.module'
 import { UsersAvatarsModule } from './modules/usersAvatars/users-avatars.module'
+import { UsersProductsModule } from './modules/usersProducts/users-products.module'
+import { PaymentCardsModule } from './modules/paymentCards/payment-cards.module'
+import { PaymentOrdersModule } from './modules/paymentOrders/payment-orders.module'
 
 @Module({
 	imports: [
@@ -17,7 +20,10 @@ import { UsersAvatarsModule } from './modules/usersAvatars/users-avatars.module'
 		AuthModule,
 		TransactionsModule,
 		UsersModule,
-		RatingsModule,
+		LeaderboardsModule,
+		PaymentCardsModule,
+		PaymentOrdersModule,
+		UsersProductsModule,
 		UsersAvatarsModule,
 		GraphQLModule.forRoot({
 			playground: {

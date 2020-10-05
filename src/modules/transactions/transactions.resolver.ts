@@ -1,19 +1,19 @@
 import BaseResolver from '../common/resolvers/common.resolver'
 import { Resolver } from '@nestjs/graphql'
-import { TransactionObject } from './dto/transactions.object'
+import { Transaction } from './dto/transactions.object'
 import { CreateTransactionInput } from './dto/create-transaction.input'
 import { UpdateTransactionInput } from './dto/update-transaction.input'
 import { TransactionsService } from './transactions.service'
 import { TransactionsArgs } from './dto/transactions.args'
 
-@Resolver(() => TransactionObject)
+@Resolver(() => Transaction)
 export class TransactionsResolver extends BaseResolver<
-	TransactionObject,
+	Transaction,
 	CreateTransactionInput,
 	UpdateTransactionInput,
 	TransactionsArgs
 >(
-	TransactionObject,
+	Transaction,
 	CreateTransactionInput,
 	UpdateTransactionInput,
 	TransactionsArgs
