@@ -1,10 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { Document, Types } from 'mongoose'
 import { ObjectId } from '../../common/constants/common'
-import { ADMIN, USER } from '../constants/roles'
-import { BANNED, IN_PENDING, OK } from '../constants/statuses'
+import { StatusesEnum } from '../enums/statuses.enum'
+import { Roles } from '../enums/roles.enum'
 
 @Schema({
+	collection: 'users',
 	timestamps: true,
 	toJSON: {
 		virtuals: true,
@@ -14,7 +15,7 @@ import { BANNED, IN_PENDING, OK } from '../constants/statuses'
 		}
 	}
 })
-export class User extends Document {
+export class UserModel extends Document {
 	@Prop({
 		type: Types.ObjectId,
 		index: true,
@@ -42,14 +43,17 @@ export class User extends Document {
 	@Prop({ required: true })
 	password: string
 
-	@Prop({ enum: [USER, ADMIN], default: USER })
-	role: string
+	@Prop({ enum: [Roles.ADMIN, Roles.USER], default: Roles.USER })
+	role: Roles
 
 	@Prop({ type: Types.ObjectId, index: true })
 	avatarId: string
 
-	@Prop({ enum: [BANNED, OK, IN_PENDING], default: IN_PENDING })
+	@Prop({
+		enum: [StatusesEnum.BANNED, StatusesEnum.OK, StatusesEnum.IN_PENDING],
+		default: StatusesEnum.IN_PENDING
+	})
 	status: string
 }
 
-export const UserSchema = SchemaFactory.createForClass(User)
+export const UserSchema = SchemaFactory.createForClass(UserModel)

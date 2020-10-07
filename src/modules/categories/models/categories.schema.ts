@@ -3,9 +3,10 @@ import { Document, Types } from 'mongoose'
 import { ObjectId } from '../../common/constants/common'
 
 @Schema({
-	timestamps: true
+	timestamps: true,
+	collection: 'categories'
 })
-export class Categories extends Document {
+export class CategoriesModel extends Document {
 	@Prop({
 		type: Types.ObjectId,
 		index: true,
@@ -18,4 +19,4 @@ export class Categories extends Document {
 	name: string
 }
 
-export const CategoriesSchema = SchemaFactory.createForClass(Categories)
+export const CategoriesSchema = SchemaFactory.createForClass(CategoriesModel)

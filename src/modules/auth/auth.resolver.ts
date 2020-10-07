@@ -1,4 +1,4 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql'
+import { Args, Query, Mutation, Resolver } from '@nestjs/graphql'
 import { BadRequestException, UnauthorizedException } from '@nestjs/common'
 import { DATA } from '../common/constants/common'
 import { CreateUserInput } from '../users/dto/create-user.input'
@@ -8,6 +8,10 @@ import { TokenObject } from './dto/token.dto'
 import { LoginUserObject } from './dto/login-user.dto'
 import { AuthService } from './auth.service'
 import { INVALID_EMAIL } from './constants/errors'
+import { CurrentUser } from './decorators/current-user.decorator'
+import { UserModel } from '../users/models/users.schema'
+import { AuthRoles } from './decorators/roles.decorator'
+import { ROLES } from './constants/roles.constants'
 
 @Resolver(() => User)
 export class AuthResolver {
@@ -15,6 +19,14 @@ export class AuthResolver {
 		private readonly usersService: UsersService,
 		private readonly authService: AuthService
 	) {}
+
+	@Query(() => User, {
+		name: 'getMe'
+	})
+	@AuthRoles(ROLES.ALL)
+	async me(@CurrentUser() user: UserModel): Promise<UserModel> {
+		return user
+	}
 
 	@Mutation(() => TokenObject, {
 		name: `loginUser`

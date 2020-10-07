@@ -7,13 +7,13 @@ import { CreateUsersAvatarsInput } from './dto/create-users-avatars.input'
 import { UsersAvatarsService } from './users-avatars.service'
 import { GraphQLUpload } from 'apollo-server-express'
 import { CurrentUser } from '../auth/decorators/current-user.decorator'
-import { User } from '../users/models/users.schema'
+import { UserModel } from '../users/models/users.schema'
 import { FileService } from '../shared/services/file.service'
 import { Inject, InternalServerErrorException } from '@nestjs/common'
 import { FileUpload } from 'graphql-upload'
 import { USERS_AVATARS_BUCKET_NAME } from 'src/environments'
-import { Roles } from '../auth/decorators/roles.decorator'
-import { ADMIN, USER } from '../users/constants/roles'
+import { AuthRoles } from '../auth/decorators/roles.decorator'
+import { Roles } from '../users/enums/roles.enum'
 
 @Resolver(() => UsersAvatars)
 export class UsersAvatarsResolver extends BaseResolver<
@@ -36,9 +36,9 @@ export class UsersAvatarsResolver extends BaseResolver<
 	}
 
 	@Mutation(() => Boolean)
-	@Roles(ADMIN, USER)
+	@AuthRoles(Roles.ADMIN, Roles.USER)
 	async uploadFile(
-		@CurrentUser() user: User,
+		@CurrentUser() user: UserModel,
 		@Args({ name: 'file', type: () => GraphQLUpload })
 		{ createReadStream, filename }: FileUpload
 	): Promise<boolean> {
@@ -63,9 +63,9 @@ export class UsersAvatarsResolver extends BaseResolver<
 	}
 
 	@Mutation(() => Boolean)
-	@Roles(ADMIN, USER)
+	@AuthRoles(Roles.ADMIN, Roles.USER)
 	async uploadFiles(
-		@CurrentUser() user: User,
+		@CurrentUser() user: UserModel,
 		@Args({ name: 'files', type: () => [GraphQLUpload] })
 		{ ...props }
 	): Promise<boolean> {

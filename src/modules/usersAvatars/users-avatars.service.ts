@@ -1,19 +1,19 @@
 import { Model } from 'mongoose'
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
-import { UsersAvatars } from './models/users-avatars.schema'
 import { BaseMongoService } from '../common/services/mongo.service'
 import { CreateUsersAvatarsInput } from './dto/create-users-avatars.input'
 import { UpdateUsersAvatarsInput } from './dto/update-user-avatars.input'
+import { UsersAvatarsModel } from './models/users-avatars.schema'
 @Injectable()
 export class UsersAvatarsService extends BaseMongoService<
-	UsersAvatars,
+	UsersAvatarsModel,
 	CreateUsersAvatarsInput,
 	UpdateUsersAvatarsInput
 > {
 	constructor(
-		@InjectModel(UsersAvatars.name)
-		private usersAvatarsModel: Model<UsersAvatars>
+		@InjectModel(UsersAvatarsModel.name)
+		private usersAvatarsModel: Model<UsersAvatarsModel>
 	) {
 		super(usersAvatarsModel)
 	}

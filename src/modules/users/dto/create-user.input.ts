@@ -1,5 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql'
-import { IsEmail, Length, Matches } from 'class-validator'
+import { IsEmail, IsEnum, IsOptional, Length, Matches } from 'class-validator'
+import { Roles } from '../enums/roles.enum'
 
 @InputType()
 export class CreateUserInput {
@@ -27,4 +28,9 @@ export class CreateUserInput {
 	@Field()
 	@Matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,20}$/)
 	password?: string
+
+	@Field({ nullable: true })
+	@IsOptional()
+	@IsEnum(Roles)
+	role?: Roles
 }

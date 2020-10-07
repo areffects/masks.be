@@ -4,7 +4,8 @@ import { ObjectId } from '../../common/constants/common'
 import { UsersProductsTypes } from '../enums/types.enums'
 
 @Schema({
-	timestamps: true
+	timestamps: true,
+	collection: 'usersProducts'
 })
 export class UsersProductsModel extends Document {
 	@Prop({

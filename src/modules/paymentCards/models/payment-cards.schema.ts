@@ -2,7 +2,10 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { Document, Types } from 'mongoose'
 import { ObjectId } from '../../common/constants/common'
 
-@Schema({ timestamps: true })
+@Schema({
+	timestamps: true,
+	collection: 'paymentCards'
+})
 export class PaymentCardsModel extends Document {
 	@Prop({
 		type: Types.ObjectId,

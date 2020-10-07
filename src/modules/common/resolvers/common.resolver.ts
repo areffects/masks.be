@@ -1,8 +1,8 @@
 import { UsePipes } from '@nestjs/common'
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { CreateQuery, Document } from 'mongoose'
-import { Roles } from 'src/modules/auth/decorators/roles.decorator'
-import { ADMIN, USER } from 'src/modules/users/constants/roles'
+import { AuthRoles } from 'src/modules/auth/decorators/roles.decorator'
+import { Roles } from 'src/modules/users/enums/roles.enum'
 import { DATA, ObjectId } from '../constants/common'
 import { ClassValidatorValidationPipe } from '../pipes/class-validator.validation.pipe'
 import { BaseMongoService } from '../services/mongo.service'
@@ -12,7 +12,8 @@ export default function BaseResolver<T, C, U, ARG>(
 	classRef: any,
 	createClassRef: any,
 	updateClassRef: any,
-	argClassRef?: any
+	argClassRef?: any,
+	defaultRoles = [Roles.ADMIN, Roles.USER]
 ): any {
 	@Resolver()
 	abstract class BaseResolverHost {
@@ -21,7 +22,7 @@ export default function BaseResolver<T, C, U, ARG>(
 		) {}
 
 		@Query(() => [classRef], { name: `findAll${classRef.name}` })
-		@Roles(ADMIN, USER)
+		@AuthRoles(...defaultRoles)
 		async findAll(
 			@Args({ type: () => argClassRef })
 			data
@@ -33,7 +34,7 @@ export default function BaseResolver<T, C, U, ARG>(
 		}
 
 		@Query(() => classRef, { name: `findOne${classRef.name}` })
-		@Roles(ADMIN, USER)
+		@AuthRoles(...defaultRoles)
 		async findOne(
 			@Args({ type: () => argClassRef })
 			data
@@ -45,7 +46,7 @@ export default function BaseResolver<T, C, U, ARG>(
 		}
 
 		@Query(() => classRef, { name: `findOneById${classRef.name}` })
-		@Roles(ADMIN, USER)
+		@AuthRoles(...defaultRoles)
 		async findOneById(
 			@Args({ name: 'id', type: () => String })
 			id: string
@@ -56,7 +57,7 @@ export default function BaseResolver<T, C, U, ARG>(
 		@Mutation(() => classRef, {
 			name: `create${classRef.name}`
 		})
-		@Roles(ADMIN, USER)
+		@AuthRoles(...defaultRoles)
 		@UsePipes(new ClassValidatorValidationPipe(createClassRef))
 		async create(
 			@Args({ name: DATA, type: () => createClassRef })
@@ -67,7 +68,7 @@ export default function BaseResolver<T, C, U, ARG>(
 
 		@Mutation(() => classRef, { name: `update${classRef.name}` })
 		@UsePipes(new ClassValidatorValidationPipe(updateClassRef))
-		@Roles(ADMIN, USER)
+		@AuthRoles(...defaultRoles)
 		async update(
 			@Args({ name: 'id', type: () => String }) id: string,
 			@Args({ name: DATA, type: () => updateClassRef }) updateData: U
@@ -76,7 +77,7 @@ export default function BaseResolver<T, C, U, ARG>(
 		}
 
 		@Mutation(() => Boolean, { name: `delete${classRef.name}` })
-		@Roles(ADMIN, USER)
+		@AuthRoles(...defaultRoles)
 		async delete(
 			@Args({ name: 'id', type: () => String }) id: string
 		): Promise<boolean> {

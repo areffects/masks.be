@@ -8,7 +8,7 @@ import {
 import { Reflector } from '@nestjs/core'
 import { GqlExecutionContext } from '@nestjs/graphql'
 import { JwtService } from '@nestjs/jwt'
-import { User as UserSchema } from 'src/modules/users/models/users.schema'
+import { UserModel } from 'src/modules/users/models/users.schema'
 import { AuthService } from '../auth.service'
 import {
 	INVALID_USER,
@@ -16,6 +16,7 @@ import {
 	TOKEN_DOESNT_EXIST,
 	INVALID_TOKEN
 } from '../constants/errors'
+import { ROLES } from '../constants/roles.constants'
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -40,16 +41,15 @@ export class RolesGuard implements CanActivate {
 		if (!request.headers.authorization) {
 			throw new UnauthorizedException(TOKEN_DOESNT_EXIST)
 		}
-		const validatedUser: UserSchema = await this.validateUser(
+		const validatedUser: UserModel = await this.validateUser(
 			request.headers.authorization
 		)
 
 		request.user = validatedUser
 
-		const findedUser: UserSchema = await this.authService.findUserByEmail(
+		const findedUser: UserModel = await this.authService.findUserByEmail(
 			validatedUser.email
 		)
-
 		if (!findedUser) {
 			throw new UnauthorizedException(USER_DOESNT_EXIST)
 		}
@@ -61,9 +61,10 @@ export class RolesGuard implements CanActivate {
 			throw new UnauthorizedException(INVALID_USER)
 		}
 
-		const user: UserSchema = request.user
-		const roleMatch = roles.some((role) => role === user.role)
-		return roleMatch
+		const user: UserModel = request.user
+		const roleMatch = roles.includes(user.role)
+		const isRoleAll = roles.includes(ROLES.ALL)
+		return roleMatch || isRoleAll
 	}
 
 	async validateUser(auth: string) {

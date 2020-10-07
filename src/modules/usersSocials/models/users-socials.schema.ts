@@ -6,9 +6,9 @@ import { ObjectId } from '../../common/constants/common'
 
 @Schema({
 	timestamps: true,
-	collection: 'usersAvatars'
+	collection: 'usersSocials'
 })
-export class UsersAvatarsModel extends Document {
+export class UsersSocialsModel extends Document {
 	@Prop({
 		type: Types.ObjectId,
 		index: true,
@@ -34,6 +34,6 @@ export class UsersAvatarsModel extends Document {
 	url: string
 }
 
-export const UsersAvatarsSchema = SchemaFactory.createForClass(
-	UsersAvatarsModel
+export const UsersSocialsSchema = SchemaFactory.createForClass(
+	UsersSocialsModel
 )

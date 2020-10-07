@@ -1,6 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql'
 import { User } from 'src/modules/users/dto/user.object'
 import { ObjectIdScalar } from 'src/modules/common/scalars/objectId.scalar'
+import { RatingTypesEnum } from '../enums/types.enums'
 
 @ObjectType()
 export class Leaderboard {
@@ -10,8 +11,8 @@ export class Leaderboard {
 	@Field(() => User, { nullable: true })
 	user: User
 
-	@Field()
-	type: string
+	@Field(() => RatingTypesEnum)
+	type: RatingTypesEnum
 
 	@Field()
 	stars: number

@@ -3,8 +3,7 @@ import { CreatePaymentOrderInput } from './dto/create-payment-order.input'
 import { UpdatePaymentOrderInput } from './dto/update-payment-order.input'
 import BaseResolver from '../common/resolvers/common.resolver'
 import { PaymentOrderArgs } from './dto/payment-order.args'
-import { Roles } from '../auth/decorators/roles.decorator'
-import { ADMIN, USER } from '../users/constants/roles'
+import { AuthRoles } from '../auth/decorators/roles.decorator'
 import { PaymentOrder } from './dto/payment-order.object'
 import { User } from '../users/dto/user.object'
 import { UsersService } from '../users/users.service'
@@ -14,6 +13,8 @@ import { PaymentOrdersService } from './payment-orders.service'
 import { Inject } from '@nestjs/common'
 import { UsersProductsService } from '../usersProducts/users-products.service'
 import { UsersProductsModel } from '../usersProducts/models/users-products.schema'
+import { UserModel } from '../users/models/users.schema'
+import { Roles } from '../users/enums/roles.enum'
 
 @Resolver(() => PaymentOrder)
 export class PaymentOrdersResolver extends BaseResolver<
@@ -37,13 +38,15 @@ export class PaymentOrdersResolver extends BaseResolver<
 	}
 
 	@ResolveField('user', () => User, { nullable: true })
-	@Roles(ADMIN, USER)
-	async getUser(@Parent() paymentOrder: PaymentOrdersModel): Promise<User> {
+	@AuthRoles(Roles.ADMIN, Roles.USER)
+	async getUser(
+		@Parent() paymentOrder: PaymentOrdersModel
+	): Promise<UserModel> {
 		return this.usersService.findOneById(paymentOrder.userId)
 	}
 
 	@ResolveField('product', () => UsersProducts, { nullable: true })
-	@Roles(ADMIN, USER)
+	@AuthRoles(Roles.ADMIN, Roles.USER)
 	async getProduct(
 		@Parent() paymentOrder: PaymentOrdersModel
 	): Promise<UsersProductsModel> {

@@ -1,5 +1,6 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql'
 import { IsEmail } from 'class-validator'
+import { UsersAvatars } from 'src/modules/usersAvatars/dto/users-avatars.object'
 
 @ObjectType()
 export class User {
@@ -22,8 +23,8 @@ export class User {
 	@Field()
 	role: string
 
-	@Field({ nullable: true })
-	avatarId: string
+	@Field(() => UsersAvatars, { nullable: true })
+	avatar: UsersAvatars
 
 	@Field()
 	status: string

@@ -3,7 +3,10 @@ import { Document, Types } from 'mongoose'
 import { ObjectId } from '../../common/constants/common'
 import { RatingTypesEnum } from '../enums/types.enums'
 
-@Schema({ timestamps: true })
+@Schema({
+	timestamps: true,
+	collection: 'leaderboards'
+})
 export class LeaderboardModel extends Document {
 	@Prop({
 		type: Types.ObjectId,

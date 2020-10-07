@@ -2,7 +2,10 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { Document, Types } from 'mongoose'
 import { ObjectId } from '../../common/constants/common'
 
-@Schema({ timestamps: true })
+@Schema({
+	timestamps: true,
+	collection: 'transactions'
+})
 export class TransactionModel extends Document {
 	@Prop({
 		type: Types.ObjectId,
@@ -12,7 +15,11 @@ export class TransactionModel extends Document {
 	})
 	_id: string
 
-	@Prop({ required: true })
+	@Prop({
+		type: Types.ObjectId,
+		index: true,
+		required: true
+	})
 	userId: number
 
 	@Prop()
