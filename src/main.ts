@@ -6,6 +6,7 @@ import { AppModule } from './app.module'
 import { Logger } from './config/logger'
 
 import { PORT } from './environments'
+import { HttpExceptionFilter } from './modules/shared/filters/http.exception.filter'
 
 async function bootstrap() {
 	const isDev = process.env.NODE_ENV === 'development'
@@ -13,7 +14,7 @@ async function bootstrap() {
 		AppModule,
 		isDev ? {} : { logger: new Logger() }
 	)
-
+	app.useGlobalFilters(new HttpExceptionFilter())
 	app.setGlobalPrefix('api/v1')
 	app.useGlobalPipes(
 		new ValidationPipe({

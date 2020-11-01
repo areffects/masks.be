@@ -26,6 +26,9 @@ export class UsersProductsModel extends Document {
 	rate: number
 
 	@Prop()
+	cost: number
+
+	@Prop()
 	type: UsersProductsTypes
 
 	@Prop()

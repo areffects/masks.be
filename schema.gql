@@ -62,6 +62,7 @@ type UsersProducts {
   _id: ID!
   name: String!
   description: String!
+  cost: String!
   rating: Float!
   type: UsersProductsTypes!
   downloads: Float!
@@ -90,6 +91,15 @@ type PaymentOrder {
   updatedAt: DateTime!
 }
 
+type UsersProductsScreenshots {
+  _id: ID!
+  userId: ObjectId!
+  name: String!
+  url: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
 type Query {
   findAllTransaction(_id: ObjectId, userId: ObjectId, type: String, amount: Float): [Transaction!]!
   findOneTransaction(_id: ObjectId, userId: ObjectId, type: String, amount: Float): Transaction!
@@ -104,8 +114,8 @@ type Query {
   findAllLeaderboard(_id: ObjectId, userId: ObjectId, type: RatingTypesEnum, stars: Float): [Leaderboard!]!
   findOneLeaderboard(_id: ObjectId, userId: ObjectId, type: RatingTypesEnum, stars: Float): Leaderboard!
   findOneByIdLeaderboard(id: String!): Leaderboard!
-  findAllUsersProducts(_id: ID, name: String, description: String, rating: Float, type: UsersProductsTypes, downloads: Float): [UsersProducts!]!
-  findOneUsersProducts(_id: ID, name: String, description: String, rating: Float, type: UsersProductsTypes, downloads: Float): UsersProducts!
+  findAllUsersProducts(_id: ID, name: String, description: String, rating: Float, cost: Float, type: UsersProductsTypes, downloads: Float): [UsersProducts!]!
+  findOneUsersProducts(_id: ID, name: String, description: String, rating: Float, cost: Float, type: UsersProductsTypes, downloads: Float): UsersProducts!
   findOneByIdUsersProducts(id: String!): UsersProducts!
   findAllPaymentCards(_id: ObjectId, numbers: String, pin: String, date: String): [PaymentCards!]!
   findOnePaymentCards(_id: ObjectId, numbers: String, pin: String, date: String): PaymentCards!
@@ -113,6 +123,9 @@ type Query {
   findAllPaymentOrder(_id: ObjectId, userId: String, productId: String): [PaymentOrder!]!
   findOnePaymentOrder(_id: ObjectId, userId: String, productId: String): PaymentOrder!
   findOneByIdPaymentOrder(id: String!): PaymentOrder!
+  findAllUsersProductsScreenshots(_id: ID, name: String, description: String, rating: Float, cost: Float, type: UsersProductsTypes, downloads: Float): [UsersProductsScreenshots!]!
+  findOneUsersProductsScreenshots(_id: ID, name: String, description: String, rating: Float, cost: Float, type: UsersProductsTypes, downloads: Float): UsersProductsScreenshots!
+  findOneByIdUsersProductsScreenshots(id: String!): UsersProductsScreenshots!
 }
 
 type Mutation {
@@ -127,8 +140,8 @@ type Mutation {
   createUsersAvatars(data: CreateUsersAvatarsInput!): UsersAvatars!
   updateUsersAvatars(data: UpdateUsersAvatarsInput!, id: String!): UsersAvatars!
   deleteUsersAvatars(id: String!): Boolean!
-  uploadFile(file: Upload!): Boolean!
-  uploadFiles(files: [Upload!]!): Boolean!
+  uploadFileUsersAvatars(file: Upload!): Boolean!
+  uploadFilesUsersAvatars(files: [Upload!]!): Boolean!
   createLeaderboard(data: CreateLeaderInput!): Leaderboard!
   updateLeaderboard(data: UpdateLeaderInput!, id: String!): Leaderboard!
   deleteLeaderboard(id: String!): Boolean!
@@ -141,6 +154,11 @@ type Mutation {
   createPaymentOrder(data: CreatePaymentOrderInput!): PaymentOrder!
   updatePaymentOrder(data: UpdatePaymentOrderInput!, id: String!): PaymentOrder!
   deletePaymentOrder(id: String!): Boolean!
+  createUsersProductsScreenshots(data: CreateUsersProductsScreenshotsInput!): UsersProductsScreenshots!
+  updateUsersProductsScreenshots(data: UpdateUsersProductsScreenshotsInput!, id: String!): UsersProductsScreenshots!
+  deleteUsersProductsScreenshots(id: String!): Boolean!
+  uploadFileUsersProductsScreenshots(file: Upload!): Boolean!
+  uploadFilesUsersProductsScreenshots(files: [Upload!]!): Boolean!
 }
 
 input createTransactionInput {
@@ -207,6 +225,7 @@ input CreateUsersProductsInput {
   name: String!
   description: String!
   type: UsersProductsTypes
+  cost: Float!
 }
 
 input UpdateUsersProductsInput {
@@ -235,4 +254,14 @@ input CreatePaymentOrderInput {
 input UpdatePaymentOrderInput {
   userId: String!
   productId: String!
+}
+
+input CreateUsersProductsScreenshotsInput {
+  userId: ObjectId!
+  name: String!
+}
+
+input UpdateUsersProductsScreenshotsInput {
+  userId: ObjectId
+  name: String
 }

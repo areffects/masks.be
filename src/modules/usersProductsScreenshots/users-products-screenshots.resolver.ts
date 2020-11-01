@@ -1,60 +1,62 @@
 import { Args, Mutation, Resolver } from '@nestjs/graphql'
-import { UsersAvatars } from './dto/users-avatars.object'
-import { UpdateUsersAvatarsInput } from './dto/update-user-avatars.input'
+import { UpdateUsersProductsScreenshotsInput } from './dto/update-users-products-screenshots.input'
 import BaseResolver from '../common/resolvers/common.resolver'
-import { UsersAvatarsArgs } from './dto/users-avatars.args'
-import { CreateUsersAvatarsInput } from './dto/create-users-avatars.input'
-import { UsersAvatarsService } from './users-avatars.service'
+import { CreateUsersProductsScreenshotsInput } from './dto/create-users-products-screenshots.input'
 import { GraphQLUpload } from 'apollo-server-express'
 import { CurrentUser } from '../auth/decorators/current-user.decorator'
 import { UserModel } from '../users/models/users.schema'
 import { FileService } from '../shared/services/file.service'
 import { Inject, InternalServerErrorException } from '@nestjs/common'
 import { FileUpload } from 'graphql-upload'
-import { USERS_AVATARS_BUCKET_NAME } from 'src/environments'
+import { USERS_PRODUCTS_SCREENSHOTS_BUCKET_NAME } from 'src/environments'
 import { AuthRoles } from '../auth/decorators/roles.decorator'
 import { Roles } from '../users/enums/roles.enum'
+import { UsersProductsArgs } from '../usersProducts/dto/users-products.args'
+import { UsersProductsScreenshots } from './dto/users-products-screenshots.object'
+import { UsersProductsScreenshotsService } from './users-products-screenshots.service'
+import { UsersProductsScreenshotsArgs } from './dto/users-products-screenshots.args'
+import { FILE, FILES } from '../common/constants/common'
 
-@Resolver(() => UsersAvatars)
-export class UsersAvatarsResolver extends BaseResolver<
-	UsersAvatars,
-	CreateUsersAvatarsInput,
-	UpdateUsersAvatarsInput,
-	UsersAvatarsArgs
+@Resolver(() => UsersProductsScreenshots)
+export class UsersProductsScreenshotsResolver extends BaseResolver<
+	UsersProductsScreenshots,
+	CreateUsersProductsScreenshotsInput,
+	UpdateUsersProductsScreenshotsInput,
+	UsersProductsScreenshotsArgs
 >(
-	UsersAvatars,
-	CreateUsersAvatarsInput,
-	UpdateUsersAvatarsInput,
-	UsersAvatarsArgs
+	UsersProductsScreenshots,
+	CreateUsersProductsScreenshotsInput,
+	UpdateUsersProductsScreenshotsInput,
+	UsersProductsArgs
 ) {
 	constructor(
-		private readonly usersAvatarsService: UsersAvatarsService,
+		private readonly usersProductsScreenshotsService: UsersProductsScreenshotsService,
 		@Inject(FileService.name) private readonly fileService: FileService
 	) {
-		super(usersAvatarsService)
+		super(usersProductsScreenshotsService)
 	}
 
 	@Mutation(() => Boolean, {
-		name: `uploadFile${UsersAvatars.name}`
+		name: `uploadFile${UsersProductsScreenshots.name}`
 	})
 	@AuthRoles(Roles.ADMIN, Roles.USER)
 	async uploadFile(
 		@CurrentUser() user: UserModel,
-		@Args({ name: 'file', type: () => GraphQLUpload })
-		{ createReadStream, filename, uid }: FileUpload & { uid: string }
+		@Args({ name: FILE, type: () => GraphQLUpload })
+		fileUpload: FileUpload & { uid: string }
 	): Promise<boolean> {
 		const fullFileName = this.fileService.getFullFileName({
 			user,
-			filename,
-			uid
+			filename: fileUpload.filename,
+			uid: fileUpload.uid
 		})
 		try {
 			await this.fileService.uploadToS3File({
-				bucketName: USERS_AVATARS_BUCKET_NAME,
+				bucketName: USERS_PRODUCTS_SCREENSHOTS_BUCKET_NAME,
 				fileName: fullFileName,
-				createReadStream
+				createReadStream: fileUpload.createReadStream
 			})
-			await this.usersAvatarsService.create({
+			await this.usersProductsScreenshotsService.create({
 				name: fullFileName,
 				userId: user.id
 			})
@@ -65,12 +67,12 @@ export class UsersAvatarsResolver extends BaseResolver<
 	}
 
 	@Mutation(() => Boolean, {
-		name: `uploadFiles${UsersAvatars.name}`
+		name: `uploadFiles${UsersProductsScreenshots.name}`
 	})
 	@AuthRoles(Roles.ADMIN, Roles.USER)
 	async uploadFiles(
 		@CurrentUser() user: UserModel,
-		@Args({ name: 'files', type: () => [GraphQLUpload] })
+		@Args({ name: FILES, type: () => [GraphQLUpload] })
 		{ ...props }
 	): Promise<boolean> {
 		const files = await Promise.all(Object.keys(props).map((key) => props[key]))
@@ -84,11 +86,11 @@ export class UsersAvatarsResolver extends BaseResolver<
 						uid
 					})
 					await this.fileService.uploadToS3File({
-						bucketName: USERS_AVATARS_BUCKET_NAME,
+						bucketName: USERS_PRODUCTS_SCREENSHOTS_BUCKET_NAME,
 						fileName: fullFileName,
 						createReadStream
 					})
-					return this.usersAvatarsService.create({
+					return this.usersProductsScreenshotsService.create({
 						name: fullFileName,
 						userId: user.id
 					})

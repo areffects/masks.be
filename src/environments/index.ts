@@ -15,5 +15,9 @@ export const MONGO_URI: string =
 export const AWS_ID = process.env.AWS_ID || 'id'
 export const AWS_SECRET = process.env.AWS_SECRET || 'secret'
 export const AWS_REGION: string = process.env.AWS_REGION || 'us-east-1'
+
 export const USERS_AVATARS_BUCKET_NAME =
 	process.env.USERS_AVATARS_BUCKET_NAME || 'bucket'
+
+export const USERS_PRODUCTS_SCREENSHOTS_BUCKET_NAME =
+	process.env.USERS_PRODUCTS_SCREENSHOTS_BUCKET_NAME || 'bucket'

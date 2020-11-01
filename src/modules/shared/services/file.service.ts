@@ -5,8 +5,9 @@ import {
 } from '@nestjs/common'
 import { parse } from 'path'
 import { S3 } from 'aws-sdk'
-import { AWS_ID, AWS_SECRET, AWS_REGION } from 'src/environments'
+import { AWS_REGION } from 'src/environments'
 import { v4 } from 'uuid'
+import { IFullFileName } from '../contracts/file.interface'
 
 @Injectable()
 export class FileService {
@@ -15,15 +16,21 @@ export class FileService {
 	constructor() {
 		this.s3 = new S3({
 			region: AWS_REGION,
-			accessKeyId: AWS_ID,
-			secretAccessKey: AWS_SECRET,
 			signatureVersion: 'v4'
 		})
 	}
 
-	generateName({ filename }) {
-		const { ext } = parse(filename)
+	generateName({ fileName }) {
+		const { ext } = parse(fileName)
 		return v4().substr(0, 8).concat(ext)
+	}
+
+	getFullFileName({ user, filename, uid }: IFullFileName) {
+		const fileName = filename || uid
+		const generatedFileName = this.generateName({
+			fileName
+		})
+		return `${user.userName}.${generatedFileName}`
 	}
 
 	async getPresignedUrl({ bucketName, fileName }) {

@@ -32,11 +32,10 @@ export class UsersAvatarsResolver extends BaseResolver<
 		@Inject(FileService.name) private readonly fileService: FileService
 	) {
 		super(usersAvatarsService)
+		this.rootDir = './uploads/users-avatars/'
 	}
 
-	@Mutation(() => Boolean, {
-		name: `uploadFile${UsersAvatars.name}`
-	})
+	@Mutation(() => Boolean)
 	@AuthRoles(Roles.ADMIN, Roles.USER)
 	async uploadFile(
 		@CurrentUser() user: UserModel,
@@ -64,9 +63,7 @@ export class UsersAvatarsResolver extends BaseResolver<
 		return true
 	}
 
-	@Mutation(() => Boolean, {
-		name: `uploadFiles${UsersAvatars.name}`
-	})
+	@Mutation(() => Boolean)
 	@AuthRoles(Roles.ADMIN, Roles.USER)
 	async uploadFiles(
 		@CurrentUser() user: UserModel,

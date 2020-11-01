@@ -13,6 +13,9 @@ export class UsersProducts {
 	description: string
 
 	@Field()
+	cost: string
+
+	@Field()
 	rating: number
 
 	@Field(() => UsersProductsTypes)

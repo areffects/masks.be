@@ -15,6 +15,9 @@ export class UsersProductsArgs {
 	@Field({ nullable: true })
 	rating: number
 
+	@Field({ nullable: true })
+	cost: number
+
 	@Field(() => UsersProductsTypes, { nullable: true })
 	type: UsersProductsTypes
 

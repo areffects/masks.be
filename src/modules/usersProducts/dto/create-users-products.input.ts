@@ -11,4 +11,7 @@ export class CreateUsersProductsInput {
 
 	@Field(() => UsersProductsTypes, { nullable: true })
 	type: UsersProductsTypes
+
+	@Field()
+	cost: number
 }

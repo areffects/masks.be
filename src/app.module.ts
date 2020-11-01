@@ -13,6 +13,7 @@ import { UsersAvatarsModule } from './modules/usersAvatars/users-avatars.module'
 import { UsersProductsModule } from './modules/usersProducts/users-products.module'
 import { PaymentCardsModule } from './modules/paymentCards/payment-cards.module'
 import { PaymentOrdersModule } from './modules/paymentOrders/payment-orders.module'
+import { UsersProductsScreenshotsModule } from './modules/usersProductsScreenshots/users-products-screenshots.module'
 
 @Module({
 	imports: [
@@ -25,6 +26,7 @@ import { PaymentOrdersModule } from './modules/paymentOrders/payment-orders.modu
 		PaymentOrdersModule,
 		UsersProductsModule,
 		UsersAvatarsModule,
+		UsersProductsScreenshotsModule,
 		GraphQLModule.forRoot({
 			playground: {
 				settings: {
@@ -33,7 +35,11 @@ import { PaymentOrdersModule } from './modules/paymentOrders/payment-orders.modu
 			},
 			context: ({ req }) => ({ req }),
 			installSubscriptionHandlers: true,
-			autoSchemaFile: 'schema.gql'
+			autoSchemaFile: 'schema.gql',
+			uploads: {
+				maxFileSize: 10000000,
+				maxFiles: 100
+			}
 		})
 	],
 	controllers: [AppController],
