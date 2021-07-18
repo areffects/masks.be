@@ -1,0 +1,280 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Transaction {
+  _id: ID!
+  userId: String!
+  type: String!
+  amount: Float!
+  balance: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type UsersAvatars {
+  _id: ID!
+  userId: ObjectId!
+  name: String!
+  url: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""Mongo object id scalar type"""
+scalar ObjectId
+
+type User {
+  _id: ID!
+  userName: String!
+  firstName: String!
+  lastName: String!
+  email: String!
+  role: String!
+  avatar: UsersAvatars
+  status: String!
+  phone: String
+}
+
+type TokenObject {
+  token: String!
+}
+
+type Leaderboard {
+  _id: ObjectId!
+  user: User!
+  type: RatingTypesEnum!
+  stars: Float!
+}
+
+enum RatingTypesEnum {
+  PATCHES
+  READY_EFFECT
+  TOP_RATED
+  TOP_DOWNLOADS
+}
+
+type UsersProducts {
+  _id: ID!
+  name: String!
+  description: String!
+  category: String!
+  cost: String!
+  rating: Float!
+  type: UsersProductsTypes!
+  downloads: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum UsersProductsTypes {
+  COMMERCIAL
+  PUBLIC
+}
+
+type PaymentCards {
+  _id: ObjectId!
+  user: User!
+  numbers: String!
+  pin: String!
+  date: String!
+}
+
+type PaymentOrder {
+  _id: ObjectId!
+  user: User
+  product: UsersProducts
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type UsersProductsScreenshots {
+  _id: ID!
+  userId: ObjectId!
+  name: String!
+  url: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Query {
+  findAllTransaction(_id: ObjectId, userId: ObjectId, type: String, amount: Float): [Transaction!]!
+  findOneTransaction(_id: ObjectId, userId: ObjectId, type: String, amount: Float): Transaction!
+  findOneByIdTransaction(id: String!): Transaction!
+  findAllUser(_id: ObjectId, userName: String, lastName: String, email: String, password: String, role: String, status: String): [User!]!
+  findOneUser(_id: ObjectId, userName: String, lastName: String, email: String, password: String, role: String, status: String): User!
+  findOneByIdUser(id: String!): User!
+  getMe: User!
+  findAllUsersAvatars(userId: ObjectId, name: String, url: String): [UsersAvatars!]!
+  findOneUsersAvatars(userId: ObjectId, name: String, url: String): UsersAvatars!
+  findOneByIdUsersAvatars(id: String!): UsersAvatars!
+  findAllLeaderboard(_id: ObjectId, userId: ObjectId, type: RatingTypesEnum, stars: Float): [Leaderboard!]!
+  findOneLeaderboard(_id: ObjectId, userId: ObjectId, type: RatingTypesEnum, stars: Float): Leaderboard!
+  findOneByIdLeaderboard(id: String!): Leaderboard!
+  findAllUsersProducts(_id: ID, name: String, category: String, description: String, rating: Float, cost: Float, type: UsersProductsTypes, downloads: Float): [UsersProducts!]!
+  findOneUsersProducts(_id: ID, name: String, category: String, description: String, rating: Float, cost: Float, type: UsersProductsTypes, downloads: Float): UsersProducts!
+  findOneByIdUsersProducts(id: String!): UsersProducts!
+  findAllPaymentCards(_id: ObjectId, numbers: String, pin: String, date: String): [PaymentCards!]!
+  findOnePaymentCards(_id: ObjectId, numbers: String, pin: String, date: String): PaymentCards!
+  findOneByIdPaymentCards(id: String!): PaymentCards!
+  findAllPaymentOrder(_id: ObjectId, userId: String, productId: String): [PaymentOrder!]!
+  findOnePaymentOrder(_id: ObjectId, userId: String, productId: String): PaymentOrder!
+  findOneByIdPaymentOrder(id: String!): PaymentOrder!
+  findAllUsersProductsScreenshots(_id: ID, name: String, category: String, description: String, rating: Float, cost: Float, type: UsersProductsTypes, downloads: Float): [UsersProductsScreenshots!]!
+  findOneUsersProductsScreenshots(_id: ID, name: String, category: String, description: String, rating: Float, cost: Float, type: UsersProductsTypes, downloads: Float): UsersProductsScreenshots!
+  findOneByIdUsersProductsScreenshots(id: String!): UsersProductsScreenshots!
+}
+
+type Mutation {
+  createTransaction(data: createTransactionInput!): Transaction!
+  updateTransaction(data: updateTransactionInput!, id: String!): Transaction!
+  deleteTransaction(id: String!): Boolean!
+  deleteAllTransaction(ids: [String!]!): Boolean!
+  loginUser(data: LoginUserObject!): TokenObject!
+  registerUser(data: CreateUserInput!): User!
+  createUser(data: CreateUserInput!): User!
+  updateUser(data: UpdateUserInput!, id: String!): User!
+  deleteUser(id: String!): Boolean!
+  deleteAllUser(ids: [String!]!): Boolean!
+  createUsersAvatars(data: CreateUsersAvatarsInput!): UsersAvatars!
+  updateUsersAvatars(data: UpdateUsersAvatarsInput!, id: String!): UsersAvatars!
+  deleteUsersAvatars(id: String!): Boolean!
+  deleteAllUsersAvatars(ids: [String!]!): Boolean!
+  uploadFileUsersAvatars(file: Upload!): Boolean!
+  uploadFilesUsersAvatars(files: [Upload!]!): Boolean!
+  createLeaderboard(data: CreateLeaderInput!): Leaderboard!
+  updateLeaderboard(data: UpdateLeaderInput!, id: String!): Leaderboard!
+  deleteLeaderboard(id: String!): Boolean!
+  deleteAllLeaderboard(ids: [String!]!): Boolean!
+  createUsersProducts(data: CreateUsersProductsInput!): UsersProducts!
+  updateUsersProducts(data: UpdateUsersProductsInput!, id: String!): UsersProducts!
+  deleteUsersProducts(id: String!): Boolean!
+  deleteAllUsersProducts(ids: [String!]!): Boolean!
+  createPaymentCards(data: CreatePaymentCardsInput!): PaymentCards!
+  updatePaymentCards(data: UpdatePaymentCardsInput!, id: String!): PaymentCards!
+  deletePaymentCards(id: String!): Boolean!
+  deleteAllPaymentCards(ids: [String!]!): Boolean!
+  createPaymentOrder(data: CreatePaymentOrderInput!): PaymentOrder!
+  updatePaymentOrder(data: UpdatePaymentOrderInput!, id: String!): PaymentOrder!
+  deletePaymentOrder(id: String!): Boolean!
+  deleteAllPaymentOrder(ids: [String!]!): Boolean!
+  createUsersProductsScreenshots(data: CreateUsersProductsScreenshotsInput!): UsersProductsScreenshots!
+  updateUsersProductsScreenshots(data: UpdateUsersProductsScreenshotsInput!, id: String!): UsersProductsScreenshots!
+  deleteUsersProductsScreenshots(id: String!): Boolean!
+  deleteAllUsersProductsScreenshots(ids: [String!]!): Boolean!
+  uploadFileUsersProductsScreenshots(file: Upload!): Boolean!
+  uploadFilesUsersProductsScreenshots(files: [Upload!]!): Boolean!
+}
+
+input createTransactionInput {
+  userId: ObjectId!
+  type: String!
+  amount: Float!
+}
+
+input updateTransactionInput {
+  userId: ObjectId
+  type: String
+  amount: Float
+}
+
+input LoginUserObject {
+  email: String!
+  password: String!
+}
+
+input CreateUserInput {
+  userName: String
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+  role: String
+}
+
+input UpdateUserInput {
+  userName: String
+  firstName: String
+  lastName: String
+  email: String
+  role: String
+  phone: String
+  password: String
+}
+
+input CreateUsersAvatarsInput {
+  userId: ObjectId!
+  name: String!
+}
+
+input UpdateUsersAvatarsInput {
+  userId: ObjectId
+  name: String
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+input CreateLeaderInput {
+  userId: ObjectId!
+  type: RatingTypesEnum!
+  stars: Float!
+}
+
+input UpdateLeaderInput {
+  userId: ObjectId!
+  type: RatingTypesEnum!
+  stars: Float!
+}
+
+input CreateUsersProductsInput {
+  name: String!
+  category: String!
+  description: String!
+  type: UsersProductsTypes
+  cost: Float!
+}
+
+input UpdateUsersProductsInput {
+  name: String
+  category: String
+  description: String
+  type: UsersProductsTypes
+}
+
+input CreatePaymentCardsInput {
+  numbers: String!
+  pin: String!
+  date: String!
+}
+
+input UpdatePaymentCardsInput {
+  numbers: String
+  pin: String
+  date: String
+}
+
+input CreatePaymentOrderInput {
+  userId: String!
+  productId: String!
+}
+
+input UpdatePaymentOrderInput {
+  userId: String!
+  productId: String!
+}
+
+input CreateUsersProductsScreenshotsInput {
+  userId: ObjectId!
+  name: String!
+}
+
+input UpdateUsersProductsScreenshotsInput {
+  userId: ObjectId
+  name: String
+}
